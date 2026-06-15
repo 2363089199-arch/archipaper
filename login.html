@@ -8,108 +8,542 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
-            background: #fafafa; color: #1a1a1a; line-height: 1.6;
+            background: #fff; color: #1a1a1a; line-height: 1.6;
             display: flex; align-items: center; justify-content: center;
-            min-height: 100vh;
+            min-height: 100vh; padding: 24px;
         }
-        .container {
-            width: 400px; max-width: 90vw;
-            background: #fff; border-radius: 12px;
-            padding: 40px 36px; box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-            border: 1px solid #e8e8e8;
+
+        /* 主卡片 */
+        .card {
+            width: 900px; max-width: 100%;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 8px 48px rgba(0,0,0,0.08);
+            display: flex; overflow: hidden;
+            animation: cardIn 0.5s ease-out;
         }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 左侧表单区 */
+        .form-side {
+            flex: 1; padding: 52px 44px; min-width: 0;
+            display: flex; flex-direction: column;
+        }
+
+        /* Logo — 与主页面 sidebar-title 一致 */
+        /* Logo — 页面左上角 */
         .logo {
-            font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
-            background: #1a1a1a; color: #fff; padding: 6px 14px;
-            border-radius: 6px; display: inline-block; margin-bottom: 24px;
+            font-size: 13px; font-weight: 700; padding: 7px 12px;
+            letter-spacing: 0.4px;
+            background: #1a1a1a; color: #fff; border-radius: 6px;
+            position: fixed; top: 24px; left: 28px;
+            z-index: 10; line-height: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-        .subtitle { font-size: 12.5px; color: #888; margin-bottom: 28px; }
-        .form-group { margin-bottom: 16px; }
+
+        /* Welcome 文字 */
+        .welcome { font-size: 24px; color: #333; margin-bottom: 6px; font-weight: 600; }
+        .form-title {
+            font-size: 26px; font-weight: 700; margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        .form-subtitle { font-size: 13px; color: #999; margin-bottom: 30px; }
+
+        /* 表单 */
+        .form-group { margin-bottom: 18px; }
         .form-group label {
-            display: block; font-size: 12px; font-weight: 600;
-            color: #555; margin-bottom: 5px;
+            display: block; font-size: 12.5px; font-weight: 600;
+            color: #555; margin-bottom: 6px;
+        }
+        .input-wrap {
+            position: relative;
         }
         .form-input {
-            width: 100%; padding: 10px 14px; border: 1.5px solid #e0e0e0;
-            border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;
-            background: #fff; color: #1a1a1a;
+            width: 100%; padding: 11px 14px;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            font-size: 14px; outline: none; transition: all 0.25s;
+            background: #fafafa; color: #1a1a1a;
         }
-        .form-input:focus { border-color: #1a1a1a; }
+        .form-input:focus {
+            border-color: #333; background: #fff;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+        }
         .form-input::placeholder { color: #bbb; }
-        .btn {
-            width: 100%; padding: 11px; border: none; border-radius: 8px;
-            font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s;
-            margin-top: 6px;
+
+        /* 密码眼睛图标 */
+        .eye-toggle {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer; opacity: 0.45; transition: opacity 0.2s;
+            user-select: none;
         }
-        .btn-primary { background: #1a1a1a; color: #fff; }
-        .btn-primary:hover { background: #333; }
-        .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
-        .error {
-            color: #ef4444; font-size: 12px; margin-bottom: 12px;
+        .eye-toggle:hover { opacity: 0.75; }
+
+        /* 记住我 + 忘记密码行 */
+        .form-options {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 22px; font-size: 12.5px;
+        }
+        .remember-me {
+            display: flex; align-items: center; gap: 6px;
+            cursor: pointer; color: #777;
+        }
+        .remember-me input[type="checkbox"] {
+            accent-color: #1a1a1a; cursor: pointer;
+        }
+        .forgot-link {
+            color: #888; cursor: pointer; text-decoration: none; transition: color 0.2s;
+        }
+        .forgot-link:hover { color: #333; }
+
+        /* 提交按钮 — 黑底白字 */
+        .btn-submit {
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            font-size: 14.5px; font-weight: 600; cursor: pointer;
+            background: #1a1a1a; color: #fff; transition: all 0.2s;
+        }
+        .btn-submit:hover { background: #333; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* 切换模式 */
+        .switch-mode {
+            margin-top: 20px; text-align: center; font-size: 13px; color: #999;
+        }
+        .switch-mode span { color: #888; }
+        .switch-mode a {
+            color: #1a1a1a; font-weight: 600; cursor: pointer;
+            text-decoration: none; margin-left: 4px;
+        }
+        .switch-mode a:hover { text-decoration: underline; }
+
+        /* 跳过链接 */
+        .skip-link {
+            margin-top: 14px; text-align: center; font-size: 12px; color: #bbb;
+        }
+        .skip-link a { color: #bbb; cursor: pointer; text-decoration: none; }
+        .skip-link a:hover { color: #888; }
+
+        /* 错误提示 */
+        .error-msg {
+            color: #ef4444; font-size: 12px; margin-bottom: 10px;
             min-height: 18px; display: none;
         }
-        .error.show { display: block; }
-        .switch {
-            text-align: center; margin-top: 18px; font-size: 12.5px; color: #888;
+        .error-msg.show { display: block; }
+
+        /* 右侧插图区 — 保留绿色背景 */
+        .art-side {
+            flex: 0 0 340px;
+            background: linear-gradient(160deg, #c8e6c9 0%, #e8f5e9 40%, #f1f8e9 100%);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
-        .switch a { color: #1a1a1a; cursor: pointer; text-decoration: underline; font-weight: 600; }
-        .divider {
-            display: flex; align-items: center; margin: 20px 0; color: #ccc; font-size: 11px;
+        .art-illustration {
+            width: 280px; height: 320px; position: relative;
         }
-        .divider::before, .divider::after {
-            content: ''; flex: 1; height: 1px; background: #e5e5e5;
+        .art-svg {
+            width: 100%; height: 100%;
         }
-        .divider span { margin: 0 12px; }
-        .skip-link {
-            text-align: center; margin-top: 14px; font-size: 12px; color: #aaa;
+        .art-decor-1 {
+            position: absolute; top: -20px; right: -20px;
+            width: 120px; height: 120px; border-radius: 50%;
+            background: rgba(76,175,80,0.1);
         }
-        .skip-link a { color: #aaa; cursor: pointer; text-decoration: none; }
-        .skip-link a:hover { color: #1a1a1a; }
+        .art-decor-2 {
+            position: absolute; bottom: 10%; left: -30px;
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(129,199,132,0.12);
+        }
+        .art-decor-3 {
+            position: absolute; top: 40%; right: -10px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(165,214,167,0.15);
+        }
+
+        /* 响应式 */
+        @media (max-width: 720px) {
+            .card { flex-direction: column; }
+            .art-side { display: none; }
+            .form-side { padding: 36px 28px; }
+            .card { max-width: 420px; }
+        }
+
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="logo">ArchiPaper</div>
-    <div class="title" id="formTitle">欢迎回来</div>
-    <div class="subtitle" id="formSub">登录你的账号，管理建筑 AI 论文</div>
 
-    <div class="error" id="errorMsg"></div>
+<div class="logo">ArchiPaper</div>
 
-    <div class="form-group">
-        <label>用户名</label>
-        <input type="text" class="form-input" id="username" placeholder="输入用户名" autocomplete="username">
+<div class="card">
+    <!-- 左侧：表单 -->
+    <div class="form-side">
+        <div class="welcome">Welcome !</div>
+        <div class="form-title" id="formTitle">Sign in to</div>
+        <div class="form-subtitle" id="formSub">管理你的建筑 AI 论文集合</div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="form-group">
+            <label>User name</label>
+            <input type="text" class="form-input" id="username"
+                   placeholder="Enter your user name" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <div class="input-wrap">
+                <input type="password" class="form-input" id="password"
+                       placeholder="Enter your password" autocomplete="current-password"
+                       style="padding-right: 38px;">
+                <span class="eye-toggle" onclick="togglePassword('password', this)" title="显示密码">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group" id="confirmGroup" style="display:none">
+            <label>Confirm Password</label>
+            <div class="input-wrap">
+                <input type="password" class="form-input" id="confirmPass"
+                       placeholder="Confirm your password" autocomplete="new-password"
+                       style="padding-right: 38px;">
+                <span class="eye-toggle" onclick="togglePassword('confirmPass', this)" title="显示密码">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-options">
+            <label class="remember-me">
+                <input type="checkbox" id="rememberMe"> Remember me
+            </label>
+            <span class="forgot-link" onclick="showError('请联系管理员重置密码')">Forgot Password ?</span>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">Login</button>
+
+        <div class="switch-mode">
+            <span id="switchText">Don't have an Account ?</span><a id="switchLink" onclick="toggleMode()">Register</a>
+        </div>
+
+        <div class="skip-link"><a href="javascript:skipLogin()">跳过登录，直接进入 →</a></div>
     </div>
-    <div class="form-group">
-        <label>密码</label>
-        <input type="password" class="form-input" id="password" placeholder="输入密码" autocomplete="current-password">
-    </div>
-    <div class="form-group" id="confirmGroup" style="display:none">
-        <label>确认密码</label>
-        <input type="password" class="form-input" id="confirmPass" placeholder="再次输入密码" autocomplete="new-password">
-    </div>
 
-    <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()">登 录</button>
+    <!-- 右侧：插图 — 保留绿色背景，人物黑色线条 -->
+    <div class="art-side">
+        <div class="art-decor-1"></div>
+        <div class="art-decor-2"></div>
+        <div class="art-decor-3"></div>
+        <div class="art-illustration">
+            <svg class="art-svg" viewBox="0 0 340 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- 地面阴影 -->
+                <ellipse cx="170" cy="370" rx="140" ry="8" fill="rgba(0,0,0,0.04)"/>
 
-    <div class="switch">
-        <span id="switchText">没有账号？</span> <a id="switchLink" onclick="toggleMode()">立即注册</a>
+                <!-- ====== 人物 A（男研究者，坐姿，戴方框眼镜）====== -->
+                <g class="char-a" transform="translate(20, 60)" data-cx="80" data-cy="160">
+                    <!-- 椅子 -->
+                    <rect x="20" y="195" width="70" height="6" rx="3" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <path d="M25 200 L20 230" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M85 200 L90 230" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M25 210 Q55 218 85 210" stroke="#333" stroke-width="1.2" fill="none"/>
+                    <!-- 椅背 -->
+                    <path d="M25 195 Q20 160 25 130" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- 腿 -->
+                    <path d="M30 190 Q28 210 25 230" stroke="#333" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <path d="M80 190 Q82 210 85 230" stroke="#333" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <!-- 鞋 -->
+                    <path d="M25 230 L18 232" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M85 230 L92 232" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- 身体/衬衫 -->
+                    <path d="M32 110 Q30 145 32 190 L78 190 Q80 145 78 110 Z" fill="#fff" stroke="#333" stroke-width="2"/>
+                    <!-- 衣领 -->
+                    <path d="M45 108 L55 120 L65 108" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- 衣服纽扣 -->
+                    <circle cx="55" cy="130" r="1.2" fill="#333"/>
+                    <circle cx="55" cy="145" r="1.2" fill="#333"/>
+                    <circle cx="55" cy="160" r="1.2" fill="#333"/>
+                    <!-- 口袋 -->
+                    <path d="M62 155 L72 155 L72 168 L62 168 Z" stroke="#333" stroke-width="1" fill="none"/>
+                    <!-- 口袋里的笔 -->
+                    <line x1="67" y1="155" x2="67" y2="150" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+
+                    <!-- 左手臂（放在桌上）-->
+                    <path d="M32 115 Q18 135 20 155 Q22 170 35 175" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- 右手臂（拿平板）-->
+                    <path d="M78 115 Q92 135 88 160" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- 手 -->
+                    <circle cx="35" cy="176" r="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                    <circle cx="88" cy="162" r="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+
+                    <!-- 平板电脑 -->
+                    <rect x="82" y="145" width="38" height="28" rx="3" fill="#e8f5e9" stroke="#333" stroke-width="2"/>
+                    <line x1="88" y1="152" x2="114" y2="152" stroke="#bbb" stroke-width="1"/>
+                    <line x1="88" y1="158" x2="110" y2="158" stroke="#bbb" stroke-width="1"/>
+                    <line x1="88" y1="164" x2="112" y2="164" stroke="#bbb" stroke-width="1"/>
+
+                    <!-- 脖子 -->
+                    <rect x="47" y="92" width="16" height="18" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/>
+
+                    <!-- 头部 -->
+                    <ellipse cx="55" cy="68" rx="28" ry="32" fill="#fff" stroke="#333" stroke-width="2.5"/>
+
+                    <!-- 耳朵 -->
+                    <path d="M27 62 Q23 68 27 74" stroke="#333" stroke-width="1.8" fill="#fff"/>
+                    <path d="M83 62 Q87 68 83 74" stroke="#333" stroke-width="1.8" fill="#fff"/>
+
+                    <!-- 头发（短发，有层次）-->
+                    <path d="M28 55 Q28 30 55 28 Q82 30 82 55" fill="#333" stroke="#333" stroke-width="1.5"/>
+                    <path d="M30 50 Q40 38 55 36 Q70 38 80 50" stroke="#555" stroke-width="1" fill="none"/>
+                    <path d="M32 44 Q45 33 55 32 Q65 33 78 44" stroke="#555" stroke-width="0.8" fill="none"/>
+
+                    <!-- 眉毛 -->
+                    <path d="M38 54 Q44 51 50 53" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                    <path d="M60 53 Q66 51 72 54" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+                    <!-- 眼睛（大圆眼风格，带瞳孔，鼠标跟踪）-->
+                    <!-- 左眼 -->
+                    <circle cx="44" cy="60" r="8" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                    <circle class="eye-a-left-iris" cx="44" cy="60" r="3.5" fill="#4a3728"/>
+                    <circle class="eye-a-left" cx="44" cy="60" r="2" fill="#1a1a1a"/>
+                    <circle cx="45" cy="58" r="0.8" fill="#fff" opacity="0.9"/>
+                    <!-- 右眼 -->
+                    <circle cx="66" cy="60" r="8" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                    <circle class="eye-a-right-iris" cx="66" cy="60" r="3.5" fill="#4a3728"/>
+                    <circle class="eye-a-right" cx="66" cy="60" r="2" fill="#1a1a1a"/>
+                    <circle cx="67" cy="58" r="0.8" fill="#fff" opacity="0.9"/>
+
+                    <!-- 方框眼镜（适配圆眼）-->
+                    <rect x="35" y="54" width="18" height="14" rx="2" fill="none" stroke="#333" stroke-width="2"/>
+                    <rect x="63" y="54" width="18" height="14" rx="2" fill="none" stroke="#333" stroke-width="2"/>
+                    <line x1="53" y1="61" x2="63" y2="61" stroke="#333" stroke-width="1.8"/>
+                    <line x1="35" y1="59" x2="28" y2="57" stroke="#333" stroke-width="1.5"/>
+                    <line x1="81" y1="59" x2="88" y2="57" stroke="#333" stroke-width="1.5"/>
+
+                    <!-- 鼻子 -->
+                    <path d="M53 66 Q55 72 57 66" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+                    <!-- 微笑 -->
+                    <path d="M46 78 Q55 84 64 78" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- 对话气泡 -->
+                    <g transform="translate(-10, -25)">
+                        <rect x="0" y="-10" width="50" height="24" rx="10" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                        <path d="M18 14 L14 24 L24 14" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                        <line x1="8" y1="0" x2="42" y2="0" stroke="#ddd" stroke-width="1.2"/>
+                        <line x1="8" y1="6" x2="36" y2="6" stroke="#ddd" stroke-width="1.2"/>
+                    </g>
+                </g>
+
+                <!-- ====== 人物 B（女助手，坐姿，戴圆框眼镜）====== -->
+                <g class="char-b" transform="translate(175, 55)" data-cx="220" data-cy="150">
+                    <!-- 椅子 -->
+                    <rect x="15" y="200" width="65" height="5" rx="2.5" fill="none" stroke="#333" stroke-width="1.5"/>
+                    <path d="M20 205 L16 235" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M75 205 L79 235" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M20 215 Q47 222 75 215" stroke="#333" stroke-width="1.2" fill="none"/>
+                    <path d="M20 200 Q16 165 20 135" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- 腿 -->
+                    <path d="M28 195 Q25 215 22 235" stroke="#333" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <path d="M68 195 Q71 215 74 235" stroke="#333" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <!-- 鞋 -->
+                    <path d="M22 235 L15 237" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M74 235 L81 237" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- 连衣裙 -->
+                    <path d="M30 108 L22 200 L72 200 L64 108 Z" fill="#333" stroke="#333" stroke-width="1.5"/>
+                    <!-- 裙摆细节 -->
+                    <path d="M26 180 Q47 185 68 180" stroke="#555" stroke-width="0.8" fill="none"/>
+
+                    <!-- 上半身/衬衫 -->
+                    <path d="M33 85 Q31 95 33 108 L61 108 Q63 95 61 85 Z" fill="#fff" stroke="#333" stroke-width="1.8"/>
+                    <!-- V领 -->
+                    <path d="M40 85 L47 98 L54 85" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- 手臂 -->
+                    <path d="M33 90 Q20 110 22 135" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <path d="M61 90 Q74 115 72 140" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- 手 -->
+                    <circle cx="22" cy="136" r="3.5" fill="#fff" stroke="#333" stroke-width="1.5"/>
+                    <circle cx="72" cy="141" r="3.5" fill="#fff" stroke="#333" stroke-width="1.5"/>
+
+                    <!-- 脖子 -->
+                    <rect x="42" y="70" width="10" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+
+                    <!-- 头部 -->
+                    <ellipse cx="47" cy="45" rx="25" ry="30" fill="#fff" stroke="#333" stroke-width="2.5"/>
+
+                    <!-- 耳朵 -->
+                    <path d="M22 40 Q18 46 22 52" stroke="#333" stroke-width="1.5" fill="#fff"/>
+                    <path d="M72 40 Q76 46 72 52" stroke="#333" stroke-width="1.5" fill="#fff"/>
+                    <!-- 耳环 -->
+                    <circle cx="22" cy="55" r="2" fill="none" stroke="#333" stroke-width="1"/>
+
+                    <!-- 长发 -->
+                    <path d="M22 35 Q22 10 47 8 Q72 10 72 35" fill="#333"/>
+                    <!-- 刘海 -->
+                    <path d="M25 30 Q30 20 35 28 Q40 18 47 25 Q54 18 59 28 Q64 20 69 30" fill="#333" stroke="#333" stroke-width="0.5"/>
+                    <!-- 长发垂下 -->
+                    <path d="M22 35 Q18 55 20 100" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M72 35 Q76 55 74 100" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- 发丝细节 -->
+                    <path d="M24 45 Q21 65 22 85" stroke="#555" stroke-width="0.8" fill="none"/>
+                    <path d="M70 45 Q73 65 72 85" stroke="#555" stroke-width="0.8" fill="none"/>
+
+                    <!-- 眉毛（细弯）-->
+                    <path d="M32 36 Q37 33 42 35" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                    <path d="M52 35 Q57 33 62 36" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+                    <!-- 眼睛（大圆眼风格，带瞳孔，鼠标跟踪）-->
+                    <!-- 左眼 -->
+                    <circle cx="37.5" cy="42.5" r="7" fill="#fff" stroke="#333" stroke-width="1.3"/>
+                    <circle class="eye-b-left-iris" cx="37.5" cy="42.5" r="3" fill="#4a3728"/>
+                    <circle class="eye-b-left" cx="37.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
+                    <circle cx="38.5" cy="40.8" r="0.7" fill="#fff" opacity="0.9"/>
+                    <!-- 上眼线 -->
+                    <path d="M30.5 41 Q37.5 36 44.5 41" stroke="#333" stroke-width="1.5" fill="none"/>
+                    <!-- 睫毛 -->
+                    <path d="M31.5 40.5 L29.5 38.5" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M43.5 40.5 L45.5 38.5" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+                    <!-- 右眼 -->
+                    <circle cx="57.5" cy="42.5" r="7" fill="#fff" stroke="#333" stroke-width="1.3"/>
+                    <circle class="eye-b-right-iris" cx="57.5" cy="42.5" r="3" fill="#4a3728"/>
+                    <circle class="eye-b-right" cx="57.5" cy="42.5" r="1.8" fill="#1a1a1a"/>
+                    <circle cx="58.5" cy="40.8" r="0.7" fill="#fff" opacity="0.9"/>
+                    <path d="M50.5 41 Q57.5 36 64.5 41" stroke="#333" stroke-width="1.5" fill="none"/>
+                    <path d="M51.5 40.5 L49.5 38.5" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M63.5 40.5 L65.5 38.5" stroke="#333" stroke-width="1" stroke-linecap="round"/>
+
+                    <!-- 圆框眼镜（适配圆眼）-->
+                    <circle cx="37.5" cy="42.5" r="9" fill="none" stroke="#333" stroke-width="1.8"/>
+                    <circle cx="57.5" cy="42.5" r="9" fill="none" stroke="#333" stroke-width="1.8"/>
+                    <line x1="46.5" y1="42.5" x2="50" y2="42.5" stroke="#333" stroke-width="1.5"/>
+                    <line x1="28.5" y1="40.5" x2="23" y2="38.5" stroke="#333" stroke-width="1.3"/>
+                    <line x1="66.5" y1="40.5" x2="72" y2="38.5" stroke="#333" stroke-width="1.3"/>
+
+                    <!-- 鼻子 -->
+                    <path d="M46 48 Q47 53 49 48" stroke="#333" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+                    <!-- 微笑 -->
+                    <path d="M40 58 Q47 63 54 58" stroke="#333" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                </g>
+
+                <!-- 小装饰：咖啡杯 -->
+                <g transform="translate(145, 305)">
+                    <path d="M0 0 L2 18 L18 18 L20 0 Z" fill="#e8f5e9" stroke="#333" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M20 4 Q26 4 26 9 Q26 14 20 14" stroke="#333" stroke-width="1.5" fill="none"/>
+                    <ellipse cx="10" cy="0" rx="10" ry="3" fill="#e8f5e9" stroke="#333" stroke-width="1.5"/>
+                    <!-- 热气 -->
+                    <path d="M6 -5 Q7 -10 5 -14" stroke="#999" stroke-width="1" fill="none" stroke-linecap="round"/>
+                    <path d="M12 -5 Q13 -10 11 -14" stroke="#999" stroke-width="1" fill="none" stroke-linecap="round"/>
+                </g>
+
+                <!-- 建筑蓝图装饰 -->
+                <g transform="translate(260, 30)" opacity="0.35">
+                    <rect x="0" y="0" width="50" height="65" rx="3" fill="#e8f5e9" stroke="#333" stroke-width="1.2"/>
+                    <line x1="7" y1="12" x2="43" y2="12" stroke="#aaa" stroke-width="0.8"/>
+                    <line x1="7" y1="22" x2="35" y2="22" stroke="#aaa" stroke-width="0.8"/>
+                    <rect x="7" y="32" width="18" height="24" rx="1" stroke="#aaa" stroke-width="0.8" fill="none"/>
+                    <line x1="29" y1="32" x2="43" y2="32" stroke="#aaa" stroke-width="0.8"/>
+                    <line x1="29" y1="42" x2="43" y2="42" stroke="#aaa" stroke-width="0.8"/>
+                    <line x1="29" y1="52" x2="43" y2="52" stroke="#aaa" stroke-width="0.8"/>
+                </g>
+
+                <!-- 浮动装饰点 -->
+                <circle cx="20" cy="70" r="3" fill="rgba(76,175,80,0.2)"/>
+                <circle cx="320" cy="200" r="4" fill="rgba(129,199,132,0.15)"/>
+                <circle cx="300" cy="340" r="2.5" fill="rgba(76,175,80,0.18)"/>
+                <circle cx="50" cy="300" r="2" fill="rgba(165,214,167,0.2)"/>
+                <circle cx="180" cy="30" r="2" fill="rgba(76,175,80,0.12)"/>
+            </svg>
+        </div>
     </div>
-
-    <div class="skip-link"><a onclick="skipLogin();return false" href="index.html">跳过登录，直接进入</a></div>
 </div>
 
 <script>
 let mode = 'login';
 
+/* ===== 鼠标跟踪眼镜动效 ===== */
+document.addEventListener('mousemove', function(e) {
+    var svg = document.querySelector('.art-svg');
+    if (!svg) return;
+    var rect = svg.getBoundingClientRect();
+    var svgW = rect.width;
+    var svgH = rect.height;
+    var mx = ((e.clientX - rect.left) / svgW) * 340;
+    var my = ((e.clientY - rect.top) / svgH) * 400;
+
+    // 人物 A - 眼球中心 (44,60) 和 (66,60)
+    var aCx = 80, aCy = 160;
+    var aDx = mx - aCx, aDy = my - aCy;
+    var aDist = Math.sqrt(aDx * aDx + aDy * aDy);
+    var aMax = 1.5;
+    var aR = Math.min(aMax / Math.max(aDist, 1), 1);
+    var aOX = (aDx * aR).toFixed(1), aOY = (aDy * aR).toFixed(1);
+
+    ['eye-a-left','eye-a-right'].forEach(function(c) {
+        var el = document.querySelector('.' + c);
+        if (el) el.setAttribute('transform', 'translate(' + aOX + ',' + aOY + ')');
+    });
+    ['eye-a-left-iris','eye-a-right-iris'].forEach(function(c) {
+        var el = document.querySelector('.' + c);
+        if (el) el.setAttribute('transform', 'translate(' + aOX + ',' + aOY + ')');
+    });
+
+    // 人物 B - 眼球中心 (37.5,42.5) 和 (57.5,42.5)
+    var bCx = 220, bCy = 150;
+    var bDx = mx - bCx, bDy = my - bCy;
+    var bDist = Math.sqrt(bDx * bDx + bDy * bDy);
+    var bMax = 1.3;
+    var bR = Math.min(bMax / Math.max(bDist, 1), 1);
+    var bOX = (bDx * bR).toFixed(1), bOY = (bDy * bR).toFixed(1);
+
+    ['eye-b-left','eye-b-right'].forEach(function(c) {
+        var el = document.querySelector('.' + c);
+        if (el) el.setAttribute('transform', 'translate(' + bOX + ',' + bOY + ')');
+    });
+    ['eye-b-left-iris','eye-b-right-iris'].forEach(function(c) {
+        var el = document.querySelector('.' + c);
+        if (el) el.setAttribute('transform', 'translate(' + bOX + ',' + bOY + ')');
+    });
+});
+
 function toggleMode() {
     mode = mode === 'login' ? 'register' : 'login';
-    document.getElementById('formTitle').textContent = mode === 'login' ? '欢迎回来' : '创建账号';
-    document.getElementById('formSub').textContent = mode === 'login' ? '登录你的账号，管理建筑 AI 论文' : '注册后即可管理你的论文集合';
-    document.getElementById('submitBtn').textContent = mode === 'login' ? '登 录' : '注 册';
-    document.getElementById('switchText').textContent = mode === 'login' ? '没有账号？' : '已有账号？';
-    document.getElementById('switchLink').textContent = mode === 'login' ? '立即注册' : '去登录';
+    document.getElementById('formTitle').textContent = mode === 'login' ? 'Sign in to' : 'Sign up to';
+    document.getElementById('formSub').textContent = mode === 'login'
+        ? '管理你的建筑 AI 论文集合'
+        : '注册后即可管理你的论文集合';
+    document.getElementById('submitBtn').textContent = mode === 'login' ? 'Login' : 'Register';
+    document.getElementById('switchText').textContent = mode === 'login'
+        ? 'Don\'t have an Account ?'
+        : 'Already have an Account ?';
+    document.getElementById('switchLink').textContent = mode === 'register' ? 'Sign in' : 'Register';
     document.getElementById('confirmGroup').style.display = mode === 'register' ? 'block' : 'none';
     document.getElementById('errorMsg').classList.remove('show');
+}
+
+function togglePassword(inputId, eyeEl) {
+    var input = document.getElementById(inputId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeEl.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+        eyeEl.title = '隐藏密码';
+    } else {
+        input.type = 'password';
+        eyeEl.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        eyeEl.title = '显示密码';
+    }
 }
 
 function showError(msg) {
@@ -118,90 +552,54 @@ function showError(msg) {
     el.classList.add('show');
 }
 
-function getUsers() {
-    try { return JSON.parse(localStorage.getItem('archipaper_users') || '{}'); }
-    catch(e) { return {}; }
-}
-
-function saveUsers(users) {
-    localStorage.setItem('archipaper_users', JSON.stringify(users));
-}
+function getUsers() { try { return JSON.parse(localStorage.getItem('archipaper_users') || '{}'); } catch(e) { return {}; } }
+function saveUsers(users) { localStorage.setItem('archipaper_users', JSON.stringify(users)); }
 
 function handleSubmit() {
     var username = document.getElementById('username').value.trim();
     var password = document.getElementById('password').value.trim();
-    var btn = document.getElementById('submitBtn');
-    var errorEl = document.getElementById('errorMsg');
-    errorEl.classList.remove('show');
-
-    if (!username || !password) {
-        showError('请填写用户名和密码');
-        return;
-    }
-
-    if (username.length < 2) {
-        showError('用户名至少 2 个字符');
-        return;
-    }
-
-    if (password.length < 3) {
-        showError('密码至少 3 位');
-        return;
-    }
+    document.getElementById('errorMsg').classList.remove('show');
+    if (!username || !password) { showError('请填写用户名和密码'); return; }
+    if (username.length < 2) { showError('用户名至少 2 个字符'); return; }
+    if (password.length < 3) { showError('密码至少 3 位'); return; }
 
     var users = getUsers();
-
     if (mode === 'register') {
         var confirm = document.getElementById('confirmPass').value.trim();
-        if (password !== confirm) {
-            showError('两次密码不一致');
-            return;
-        }
-        if (users[username]) {
-            showError('用户名已存在');
-            return;
-        }
-        users[username] = btoa(password); // 简单编码存储
-        saveUsers(users);
-        doLogin(username);
+        if (!confirm) { showError('请输入确认密码'); return; }
+        if (password !== confirm) { showError('两次密码不一致'); return; }
+        if (users[username]) { showError('用户名已存在'); return; }
+        users[username] = btoa(password); saveUsers(users);
+        playTransition(username);
     } else {
-        if (!users[username]) {
-            showError('用户名不存在');
-            return;
-        }
-        if (users[username] !== btoa(password)) {
-            showError('密码错误');
-            return;
-        }
-        doLogin(username);
+        if (!users[username]) { showError('用户名不存在'); return; }
+        if (users[username] !== btoa(password)) { showError('密码错误'); return; }
+        playTransition(username);
     }
-}
-
-function doLogin(username) {
-    localStorage.setItem('archipaper_logged_in', 'true');
-    localStorage.setItem('archipaper_current_user', username);
-    window.location.href = 'index.html';
 }
 
 function skipLogin() {
     localStorage.setItem('archipaper_logged_in', 'true');
     localStorage.setItem('archipaper_current_user', '访客');
-    // 优先用 replace 避免浏览器历史问题
-    window.location.replace('index.html');
+    playTransition('访客');
 }
 
-// 回车提交
-var passEl = document.getElementById('password');
-passEl.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleSubmit();
-});
-var confirmEl = document.getElementById('confirmPass');
-confirmEl.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleSubmit();
-});
-var userEl = document.getElementById('username');
-userEl.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('password').focus();
+function playTransition(username) {
+    localStorage.setItem('archipaper_logged_in', 'true');
+    localStorage.setItem('archipaper_current_user', username);
+    window.location.href = 'index.html';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('username').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+    document.getElementById('password').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') mode === 'register' ? document.getElementById('confirmPass').focus() : handleSubmit();
+    });
+    document.getElementById('confirmPass').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleSubmit();
+    });
 });
 </script>
 </body>
