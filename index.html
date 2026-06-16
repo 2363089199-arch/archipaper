@@ -51,9 +51,10 @@
         .nav-item-edit:hover { color: #e74c3c; background: #fef2f2; }
         /* 主内容 */
         .main { margin-left: 220px; flex: 1; padding: 24px 36px; }
-        .page-header { margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid #e5e5e5; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .page-header { margin-bottom: 28px; padding: 20px 36px 12px; border-bottom: 1px solid #e5e5e5; }
+        .page-header-top { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
         .page-header-left { min-width: 0; }
-        .page-header h1 { font-size: 14px; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.5px; background: #1a1a1a; color: #fff; padding: 8px 18px; border-radius: 6px; display: inline-block; }
+        .page-header h1 { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; background: #1a1a1a; color: #fff; padding: 8px 18px; border-radius: 6px; display: inline-block; margin: 0; }
         .page-header p { font-size: 12.5px; color: #888; margin-top: 2px; }
         /* 搜索栏 */
         .search-wrap {
@@ -79,6 +80,100 @@
         .search-clear { display: none; font-size: 16px; }
         .search-clear.visible { display: flex; }
         .search-match-count { font-size: 11px; color: #999; margin-left: 8px; white-space: nowrap; }
+        /* 头像 */
+        .user-widget {
+            position: fixed; top: 20px; right: 28px; z-index: 20;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            opacity: 0.4; transition: opacity 0.3s;
+        }
+        .user-widget:hover { opacity: 1; }
+        .user-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: #1a1a1a; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0;
+        }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-placeholder { width: 20px; height: 20px; }
+        .user-name { font-size: 11px; color: #888; }
+        .user-logout { font-size: 10px; color: #bbb; cursor: pointer; text-decoration: none; }
+        .user-logout:hover { color: #888; }
+        /* 收藏 */
+        .fav-star {
+            position: absolute; top: 24px; right: 0;
+            font-size: 16px; cursor: pointer; opacity: 0;
+            transition: opacity 0.15s, color 0.15s; user-select: none;
+            width: 24px; height: 24px; line-height: 24px;
+            text-align: center; border-radius: 4px; color: #ccc; z-index: 1;
+        }
+        .paper:hover .fav-star { opacity: 1; }
+        .fav-star:hover { opacity: 1; color: #f5a623; background: #fff8e8; }
+        .fav-star.active { opacity: 1; color: #f5a623; }
+        .fav-dropdown {
+            position: absolute; top: 100%; right: -8px;
+            margin-top: 8px; background: #fff;
+            border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+            padding: 6px 0; z-index: 30;
+            min-width: 120px; border: 1px solid #eee;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.15s, visibility 0.15s;
+        }
+        .user-widget:hover .fav-dropdown { opacity: 1; visibility: visible; }
+        .fav-dropdown-item {
+            display: block; padding: 8px 16px; font-size: 12px;
+            color: #333; text-decoration: none; cursor: pointer;
+            transition: background 0.15s; white-space: nowrap;
+        }
+        .fav-dropdown-item:hover { background: #f5f5f5; }
+        .fav-badge {
+            background: #f5a623; color: #fff; font-size: 10px;
+            border-radius: 10px; padding: 1px 6px; margin-left: 6px;
+        }
+        .fav-back { margin-left: 10px; cursor: pointer; color: #f5a623; font-size: 11px; font-weight: 600; }
+        /* 关键词标签 */
+        .tag-kw {
+            background: #e8f5e9; color: #388e3c; font-size: 10px;
+            padding: 2px 7px; border-radius: 4px; border: 1px solid #c8e6c9;
+            font-weight: 500; white-space: nowrap;
+        }
+        /* 头像弹窗 */
+        .avatar-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 50; background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .avatar-modal {
+            background: #fff; border-radius: 20px; padding: 36px 28px 24px;
+            text-align: center; min-width: 300px; box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+        }
+        .avatar-modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #1a1a1a; }
+        .avatar-preview-large {
+            width: 96px; height: 96px; border-radius: 50%;
+            margin: 0 auto 20px; background: #1a1a1a;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; position: relative;
+        }
+        .avatar-preview-large img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-preview-large .avatar-placeholder-lg { width: 52px; height: 52px; }
+        .avatar-actions { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+        .avatar-btn-primary {
+            padding: 9px 24px; border-radius: 8px; border: none;
+            background: #1a1a1a; color: #fff; cursor: pointer;
+            font-size: 13px; font-weight: 600; transition: all 0.2s;
+        }
+        .avatar-btn-primary:hover { background: #333; transform: translateY(-1px); }
+        .avatar-btn-outline {
+            padding: 9px 24px; border-radius: 8px; border: 1.5px solid #ddd;
+            background: #fff; cursor: pointer; font-size: 13px; color: #666;
+            transition: all 0.2s;
+        }
+        .avatar-btn-outline:hover { border-color: #e74c3c; color: #e74c3c; }
+        .avatar-btn-ghost {
+            margin-top: 8px; background: none; border: none; color: #bbb;
+            cursor: pointer; font-size: 12px; transition: color 0.2s;
+        }
+        .avatar-btn-ghost:hover { color: #888; }
+        .avatar-file-input { display: none; }
         /* 内嵌 PDF 查看器 */
         .pdf-panel {
             display: none; margin: 8px -36px 8px -36px; border: 1px solid #e0e0e0; border-radius: 8px;
@@ -225,6 +320,13 @@
             cursor: pointer; transition: all 0.12s;
         }
         .draw-toolbar .color-btn.active { border-color: #4ade80; transform: scale(1.15); }
+        .rgb-picker, .rgb-picker-hl {
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 1.5px solid #ddd; cursor: pointer; padding: 0;
+            background: none; vertical-align: middle; margin: 0 2px;
+        }
+        .rgb-picker::-webkit-color-swatch-wrapper, .rgb-picker-hl::-webkit-color-swatch-wrapper { padding: 0; }
+        .rgb-picker::-webkit-color-swatch, .rgb-picker-hl::-webkit-color-swatch { border-radius: 50%; border: none; }
         .draw-toolbar .size-btn {
             font-size: 10px; padding: 3px 8px; border: 1px solid #555;
             border-radius: 3px; cursor: pointer; background: #333; color: #ccc;
@@ -314,13 +416,66 @@
         /* AI 导入浮动按钮 */
         .ai-import-btn {
             position: fixed; bottom: 24px; right: 24px; z-index: 100;
-            width: 52px; height: 52px; border-radius: 50%; border: none;
+            width: 48px; height: 48px; border-radius: 50%; border: none;
             background: #4ade80; color: #1a1a1a; cursor: pointer;
             box-shadow: 0 4px 16px rgba(74,222,128,0.4); transition: all 0.3s;
             display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 300; line-height: 1; padding: 0 0 2px 0;
             opacity: 0.25;
         }
         .ai-import-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(74,222,128,0.5); opacity: 1; }
+        /* 深夜模式按钮 */
+        .dark-mode-btn {
+            position: fixed; bottom: 24px; left: 24px; z-index: 100;
+            width: 48px; height: 48px; border-radius: 50%; border: none;
+            background: #f5f5f5; color: #888; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dark-mode-btn:hover { background: #e8e8e8; color: #333; }
+        /* 深夜护眼模式 */
+        body.dark-mode { background: #1b1f27; color: #c5c8d0; }
+        body.dark-mode .sidebar { background: #171a21; border-color: #282c35; }
+        body.dark-mode .sidebar-title { background: #2a2f3a; }
+        body.dark-mode .sidebar-sub { color: #5a5f6a; }
+        body.dark-mode .nav-item { color: #7a7f8a; }
+        body.dark-mode .nav-item:hover { background: #1f2330; color: #c5c8d0; }
+        body.dark-mode .nav-item.active { background: #1f2330; color: #fff; }
+        body.dark-mode .nav-divider { border-color: #282c35; }
+        body.dark-mode .nav-count { background: #2a2f3a; color: #7a7f8a; }
+        body.dark-mode .main { background: #1b1f27; }
+        body.dark-mode .page-header { border-color: #282c35; }
+        body.dark-mode .page-header p { color: #6a6f7a; }
+        body.dark-mode .search-wrap { background: #22262f; border-color: #2e3340; }
+        body.dark-mode .search-wrap:focus-within { border-color: #4a4f5a; }
+        body.dark-mode .search-input { color: #c5c8d0; }
+        body.dark-mode .search-input::placeholder { color: #5a5f6a; }
+        body.dark-mode .search-icon, body.dark-mode .search-clear { color: #5a5f6a; }
+        body.dark-mode .paper { background: #1f2330; border-color: #282c35; }
+        body.dark-mode .paper:hover { background: #242839; }
+        body.dark-mode .paper-title { color: #d8dce3; }
+        body.dark-mode .paper-desc { color: #8a8f9a; }
+        body.dark-mode .paper-num { color: #5a5f6a; }
+        body.dark-mode .paper-links a { background: #282c35; color: #8ab4f8; }
+        body.dark-mode .paper-links a:hover { background: #2e3340; }
+        body.dark-mode .filter-info { background: #1f2330; color: #8a8f9a; border-color: #282c35; }
+        body.dark-mode .modal-content { background: #1f2330; color: #c5c8d0; border-color: #282c35; }
+        body.dark-mode .form-input, body.dark-mode .form-select, body.dark-mode .form-textarea { background: #22262f; border-color: #2e3340; color: #c5c8d0; }
+        body.dark-mode .ai-chat-panel { background: #1c1f28; border-color: #282c35; }
+        body.dark-mode .ai-chat-header { background: #1f2330; color: #c5c8d0; border-color: #282c35; }
+        body.dark-mode .ai-chat-input { background: #1f2330; border-color: #282c35; }
+        body.dark-mode .ai-chat-input input { background: transparent; color: #c5c8d0; }
+        body.dark-mode .btn-primary { background: #4caf50; }
+        body.dark-mode .btn-secondary { background: #2a2f3a; color: #8a8f9a; }
+        body.dark-mode .dark-mode-btn { background: #1f2330; color: #f5a623; }
+        body.dark-mode .dark-mode-btn:hover { background: #282c35; }
+        body.dark-mode .server-indicator { background: #1f2330; color: #6a6f7a; border-color: #282c35; }
+        body.dark-mode .user-name { color: #8a8f9a; }
+        body.dark-mode .user-logout { color: #6a6f9a; }
+        body.dark-mode .fav-dropdown { background: #1f2330; border-color: #2e3340; }
+        body.dark-mode .fav-dropdown-item { color: #c5c8d0; }
+        body.dark-mode .fav-dropdown-item:hover { background: #282c35; }
+        body.dark-mode .avatar-modal { background: #1f2330; }
         /* 荧光笔 */
         .draw-toolbar .action-btn.highlighter.active { background: #fde047; color: #1a1a1a; border-color: #fde047; }
         .highlighter-colors { display: inline-flex; gap: 4px; align-items: center; margin-left: 2px; }
@@ -378,6 +533,11 @@
         }
         .server-indicator.show { display: block; }
     </style>
+    <script>
+        window.addEventListener('wheel', function(e) {
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); }
+        }, { passive: false });
+    </script>
 </head>
 <body>
 <div class="layout">
@@ -414,23 +574,50 @@
     </a>
 </nav>
 
+<!-- 右上角头像 -->
+<div class="user-widget" id="userWidget">
+    <div class="user-avatar" id="userAvatar" onclick="openAvatarModal()" title="设置头像">
+        <svg class="avatar-placeholder" id="avatarPlaceholder" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" fill="#fff"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="user-name" id="userNameDisplay">访客</div>
+    <a class="user-logout" onclick="logout()">Sign out</a>
+    <div class="fav-dropdown">
+        <div class="fav-dropdown-item" onclick="showFavorites()">
+            <span style="color:#f5a623;margin-right:6px">★</span>我的收藏<span class="fav-badge" id="favBadge">0</span>
+        </div>
+    </div>
+</div>
+
+<!-- 头像设置弹窗 -->
+<div class="avatar-modal-overlay" id="avatarModalOverlay" style="display:none" onclick="closeAvatarModal(event)">
+<div class="avatar-modal" onclick="event.stopPropagation()">
+    <h3>设置头像</h3>
+    <div class="avatar-preview-large" id="avatarPreviewLarge">
+        <svg class="avatar-placeholder-lg" id="avatarPlaceholderLg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" fill="#fff"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="avatar-actions">
+        <button class="avatar-btn-primary" onclick="document.getElementById('avatarFileInput').click()">更换照片</button>
+        <button class="avatar-btn-outline" onclick="removeAvatar()">移除</button>
+    </div>
+    <button class="avatar-btn-ghost" onclick="closeAvatarModal()">取消</button>
+    <input type="file" class="avatar-file-input" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(event)">
+</div>
+</div>
+
 <!-- ===== 主内容 ===== -->
 <main class="main">
     <div class="page-header">
-        <div class="page-header-left">
+        <div class="page-header-top">
             <h1>ArchiPaper</h1>
-            <p id="headerSubtitle">人工智能与建筑设计、施工、能源管理交叉研究 · 中文 8 篇 / 英文 25 篇 · 更新于 2026.06</p>
-            <p style="font-size:11px;color:#aaa;margin-top:2px">
-                👤 <span id="headerUser"></span> · <a style="color:#aaa;cursor:pointer;text-decoration:underline" onclick="logout()">退出</a>
-            </p>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
             <span class="search-match-count" id="searchCount" style="display:none"></span>
             <div class="search-wrap">
                 <span class="search-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
                 <input class="search-input" id="searchInput" type="text" placeholder="搜索论文标题、描述、期刊..." oninput="doSearch()">
                 <button class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
             </div>
+        </div>
+        <div class="page-header-left">
+            <p id="headerSubtitle">人工智能与建筑设计、施工、能源管理交叉研究 · 中文 8 篇 / 英文 25 篇 · 更新于 2026.06</p>
         </div>
     </div>
 
@@ -958,8 +1145,11 @@
 </div>
 
 <!-- AI 导入浮动按钮 -->
-<button class="ai-import-btn" onclick="openImportModal()" title="AI 导入论文">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+<button class="ai-import-btn" onclick="openImportModal()" title="AI 导入论文">+</button>
+
+<!-- 深夜模式 -->
+<button class="dark-mode-btn" id="darkModeBtn" onclick="toggleDarkMode()" title="深夜护眼模式">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
 </button>
 
 <!-- API 设置模态框 -->
@@ -1361,7 +1551,7 @@ function openPdfInline(link, num) {
     if (!panel || !panel.classList.contains('pdf-panel')) {
         panel = document.createElement('div');
         panel.className = 'pdf-panel';
-        panel.innerHTML = '<div class="pdf-panel-header"><span class="pdf-panel-title"></span><button class="pdf-panel-close" onclick="closePdfPanel()">✕ 关闭</button></div><div class="draw-toolbar"><button class="annotate-toggle" onclick="toggleAnnotateMode(this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:3px"><path d="M11.5 1.5l3 3L5 14H2v-3L11.5 1.5z"/><path d="M9.5 3.5l3 3"/></svg>涂画模式</button><label>画笔</label><span class="color-btn active" data-color="#ef4444" style="background:#ef4444" onclick="setDrawColor(this,\'#ef4444\')"></span><span class="color-btn" data-color="#1a1a1a" style="background:#1a1a1a" onclick="setDrawColor(this,\'#1a1a1a\')"></span><span class="color-btn" data-color="#4ade80" style="background:#4ade80" onclick="setDrawColor(this,\'#4ade80\')"></span><span class="color-btn" data-color="#3b82f6" style="background:#3b82f6" onclick="setDrawColor(this,\'#3b82f6\')"></span><label style="margin-left:6px">粗细</label><span class="size-btn" data-size="2" onclick="setDrawSize(this,2)">细</span><span class="size-btn active" data-size="4" onclick="setDrawSize(this,4)">中</span><span class="size-btn" data-size="8" onclick="setDrawSize(this,8)">粗</span><span class="action-btn eraser" onclick="toggleEraser(this)">橡皮</span><span class="action-btn highlighter" onclick="toggleHighlighter(this)">荧光笔</span><span class="highlighter-colors hidden"><span class="color-btn active" style="background:#fde047" onclick="setHighlighterColor(this,\'#fde047\')"></span><span class="color-btn" style="background:#4ade80" onclick="setHighlighterColor(this,\'#4ade80\')"></span><span class="color-btn" style="background:#60a5fa" onclick="setHighlighterColor(this,\'#60a5fa\')"></span></span><span class="action-btn" onclick="clearDrawing(this)">清空</span><span class="action-btn" onclick="saveDrawing(this)">💾 保存</span><span class="action-btn" onclick="undoDrawing(this)">↩ 撤销</span><span style="font-size:10px;color:#999;line-height:28px;margin-left:2px">自动</span></div><div class="pdf-body"><div class="pdf-viewer-wrap"><iframe src=""></iframe><canvas class="pen-canvas"></canvas><canvas class="hl-canvas"></canvas></div><div class="ai-chat-panel"><div class="ai-chat-header"><span>DeepSeek 问答</span></div><div class="ai-chat-messages"><div class="chat-msg chat-msg-assistant"><div class="chat-msg-content">你好！我是你的论文阅读助手。可以向我提问关于论文内容的任何问题。</div></div></div><div class="ai-chat-input-row"><textarea class="ai-chat-input" placeholder="输入问题..." rows="2"></textarea><button class="ai-chat-send" onclick="sendAiQuery(this)">发送</button></div></div></div>';
+        panel.innerHTML = '<div class="pdf-panel-header"><span class="pdf-panel-title"></span><button class="pdf-panel-close" onclick="closePdfPanel()">✕ 关闭</button></div><div class="draw-toolbar"><button class="annotate-toggle" onclick="toggleAnnotateMode(this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:3px"><path d="M11.5 1.5l3 3L5 14H2v-3L11.5 1.5z"/><path d="M9.5 3.5l3 3"/></svg>涂画模式</button><label>画笔</label><span class="color-btn active" data-color="#ef4444" style="background:#ef4444" onclick="setDrawColor(this,\'#ef4444\')"></span><span class="color-btn" data-color="#1a1a1a" style="background:#1a1a1a" onclick="setDrawColor(this,\'#1a1a1a\')"></span><span class="color-btn" data-color="#4ade80" style="background:#4ade80" onclick="setDrawColor(this,\'#4ade80\')"></span><span class="color-btn" data-color="#3b82f6" style="background:#3b82f6" onclick="setDrawColor(this,\'#3b82f6\')"></span><input type="color" class="rgb-picker" value="#ef4444" onchange="setDrawColorRGB(this.value)" title="自定义颜色"><label style="margin-left:6px">粗细</label><span class="size-btn" data-size="2" onclick="setDrawSize(this,2)">细</span><span class="size-btn active" data-size="4" onclick="setDrawSize(this,4)">中</span><span class="size-btn" data-size="8" onclick="setDrawSize(this,8)">粗</span><span class="action-btn eraser" onclick="toggleEraser(this)">橡皮</span><span class="action-btn highlighter" onclick="toggleHighlighter(this)">荧光笔</span><span class="highlighter-colors hidden"><span class="color-btn active" style="background:#fde047" onclick="setHighlighterColor(this,\'#fde047\')"></span><span class="color-btn" style="background:#4ade80" onclick="setHighlighterColor(this,\'#4ade80\')"></span><span class="color-btn" style="background:#60a5fa" onclick="setHighlighterColor(this,\'#60a5fa\')"></span><input type="color" class="rgb-picker-hl" value="#fde047" onchange="setHighlighterColorRGB(this.value)" title="自定义荧光笔"></span><span class="action-btn" onclick="clearDrawing(this)">清空</span><span class="action-btn" onclick="saveDrawing(this)">💾 保存</span><span class="action-btn" onclick="undoDrawing(this)">↩ 撤销</span><span style="font-size:10px;color:#999;line-height:28px;margin-left:2px">自动</span></div><div class="pdf-body"><div class="pdf-viewer-wrap"><iframe src=""></iframe><canvas class="pen-canvas"></canvas><canvas class="hl-canvas"></canvas></div><div class="ai-chat-panel"><div class="ai-chat-header"><span>DeepSeek 问答</span></div><div class="ai-chat-messages"><div class="chat-msg chat-msg-assistant"><div class="chat-msg-content">你好！我是你的论文阅读助手。可以向我提问关于论文内容的任何问题。</div></div></div><div class="ai-chat-input-row"><textarea class="ai-chat-input" placeholder="输入问题..." rows="2"></textarea><button class="ai-chat-send" onclick="sendAiQuery(this)">发送</button></div></div></div>';
         targetPaper.parentNode.insertBefore(panel, targetPaper.nextSibling);
         initCanvasDrawing(panel, num);
     }
@@ -1389,7 +1579,7 @@ function openPdfBlob(blobUrl, num) {
     if (!panel || !panel.classList.contains('pdf-panel')) {
         panel = document.createElement('div');
         panel.className = 'pdf-panel';
-        panel.innerHTML = '<div class="pdf-panel-header"><span class="pdf-panel-title"></span><button class="pdf-panel-close" onclick="closePdfPanel()">✕ 关闭</button></div><div class="draw-toolbar"><button class="annotate-toggle" onclick="toggleAnnotateMode(this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:3px"><path d="M11.5 1.5l3 3L5 14H2v-3L11.5 1.5z"/><path d="M9.5 3.5l3 3"/></svg>涂画模式</button><label>画笔</label><span class="color-btn active" data-color="#ef4444" style="background:#ef4444" onclick="setDrawColor(this,\'#ef4444\')"></span><span class="color-btn" data-color="#1a1a1a" style="background:#1a1a1a" onclick="setDrawColor(this,\'#1a1a1a\')"></span><span class="color-btn" data-color="#4ade80" style="background:#4ade80" onclick="setDrawColor(this,\'#4ade80\')"></span><span class="color-btn" data-color="#3b82f6" style="background:#3b82f6" onclick="setDrawColor(this,\'#3b82f6\')"></span><label style="margin-left:6px">粗细</label><span class="size-btn" data-size="2" onclick="setDrawSize(this,2)">细</span><span class="size-btn active" data-size="4" onclick="setDrawSize(this,4)">中</span><span class="size-btn" data-size="8" onclick="setDrawSize(this,8)">粗</span><span class="action-btn eraser" onclick="toggleEraser(this)">橡皮</span><span class="action-btn highlighter" onclick="toggleHighlighter(this)">荧光笔</span><span class="highlighter-colors hidden"><span class="color-btn active" style="background:#fde047" onclick="setHighlighterColor(this,\'#fde047\')"></span><span class="color-btn" style="background:#4ade80" onclick="setHighlighterColor(this,\'#4ade80\')"></span><span class="color-btn" style="background:#60a5fa" onclick="setHighlighterColor(this,\'#60a5fa\')"></span></span><span class="action-btn" onclick="clearDrawing(this)">清空</span><span class="action-btn" onclick="saveDrawing(this)">💾 保存</span><span class="action-btn" onclick="undoDrawing(this)">↩ 撤销</span><span style="font-size:10px;color:#999;line-height:28px;margin-left:2px">自动</span></div><div class="pdf-body"><div class="pdf-viewer-wrap"><iframe src=""></iframe><canvas class="pen-canvas"></canvas><canvas class="hl-canvas"></canvas></div><div class="ai-chat-panel"><div class="ai-chat-header"><span>DeepSeek 问答</span></div><div class="ai-chat-messages"><div class="chat-msg chat-msg-assistant"><div class="chat-msg-content">你好！我是你的论文阅读助手。可以向我提问关于论文内容的任何问题。</div></div></div><div class="ai-chat-input-row"><textarea class="ai-chat-input" placeholder="输入问题..." rows="2"></textarea><button class="ai-chat-send" onclick="sendAiQuery(this)">发送</button></div></div></div>';
+        panel.innerHTML = '<div class="pdf-panel-header"><span class="pdf-panel-title"></span><button class="pdf-panel-close" onclick="closePdfPanel()">✕ 关闭</button></div><div class="draw-toolbar"><button class="annotate-toggle" onclick="toggleAnnotateMode(this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:3px"><path d="M11.5 1.5l3 3L5 14H2v-3L11.5 1.5z"/><path d="M9.5 3.5l3 3"/></svg>涂画模式</button><label>画笔</label><span class="color-btn active" data-color="#ef4444" style="background:#ef4444" onclick="setDrawColor(this,\'#ef4444\')"></span><span class="color-btn" data-color="#1a1a1a" style="background:#1a1a1a" onclick="setDrawColor(this,\'#1a1a1a\')"></span><span class="color-btn" data-color="#4ade80" style="background:#4ade80" onclick="setDrawColor(this,\'#4ade80\')"></span><span class="color-btn" data-color="#3b82f6" style="background:#3b82f6" onclick="setDrawColor(this,\'#3b82f6\')"></span><input type="color" class="rgb-picker" value="#ef4444" onchange="setDrawColorRGB(this.value)" title="自定义颜色"><label style="margin-left:6px">粗细</label><span class="size-btn" data-size="2" onclick="setDrawSize(this,2)">细</span><span class="size-btn active" data-size="4" onclick="setDrawSize(this,4)">中</span><span class="size-btn" data-size="8" onclick="setDrawSize(this,8)">粗</span><span class="action-btn eraser" onclick="toggleEraser(this)">橡皮</span><span class="action-btn highlighter" onclick="toggleHighlighter(this)">荧光笔</span><span class="highlighter-colors hidden"><span class="color-btn active" style="background:#fde047" onclick="setHighlighterColor(this,\'#fde047\')"></span><span class="color-btn" style="background:#4ade80" onclick="setHighlighterColor(this,\'#4ade80\')"></span><span class="color-btn" style="background:#60a5fa" onclick="setHighlighterColor(this,\'#60a5fa\')"></span><input type="color" class="rgb-picker-hl" value="#fde047" onchange="setHighlighterColorRGB(this.value)" title="自定义荧光笔"></span><span class="action-btn" onclick="clearDrawing(this)">清空</span><span class="action-btn" onclick="saveDrawing(this)">💾 保存</span><span class="action-btn" onclick="undoDrawing(this)">↩ 撤销</span><span style="font-size:10px;color:#999;line-height:28px;margin-left:2px">自动</span></div><div class="pdf-body"><div class="pdf-viewer-wrap"><iframe src=""></iframe><canvas class="pen-canvas"></canvas><canvas class="hl-canvas"></canvas></div><div class="ai-chat-panel"><div class="ai-chat-header"><span>DeepSeek 问答</span></div><div class="ai-chat-messages"><div class="chat-msg chat-msg-assistant"><div class="chat-msg-content">你好！我是你的论文阅读助手。可以向我提问关于论文内容的任何问题。</div></div></div><div class="ai-chat-input-row"><textarea class="ai-chat-input" placeholder="输入问题..." rows="2"></textarea><button class="ai-chat-send" onclick="sendAiQuery(this)">发送</button></div></div></div>';
         targetPaper.parentNode.insertBefore(panel, targetPaper.nextSibling);
         initCanvasDrawing(panel, num);
     }
@@ -1726,6 +1916,43 @@ function setHighlighterColor(btn, color) {
     if (penCanvas) { penCanvas._highlighterColor = color; penCanvas._drawColor = color; }
 }
 
+// RGB 自定义颜色
+function setDrawColorRGB(color) {
+    var panel = document.querySelector('.pdf-panel.show') || document.querySelector('.pdf-panel');
+    if(!panel) return;
+    var penCanvas = panel.querySelector('.pen-canvas');
+    if(!penCanvas) return;
+    penCanvas._drawColor = color;
+    penCanvas._isEraser = false;
+    penCanvas._isHighlighter = false;
+    var toolbar = panel.querySelector('.draw-toolbar');
+    toolbar.querySelectorAll('.draw-toolbar > .color-btn').forEach(function(b){b.classList.remove('active');});
+    var eraserBtn = toolbar.querySelector('.eraser');
+    if(eraserBtn) eraserBtn.classList.remove('active');
+    var hlBtn = toolbar.querySelector('.highlighter');
+    if(hlBtn) hlBtn.classList.remove('active');
+    var hlColors = toolbar.querySelector('.highlighter-colors');
+    if(hlColors) hlColors.classList.add('hidden');
+}
+function setHighlighterColorRGB(color) {
+    var panel = document.querySelector('.pdf-panel.show') || document.querySelector('.pdf-panel');
+    if(!panel) return;
+    var penCanvas = panel.querySelector('.pen-canvas');
+    if(!penCanvas) return;
+    penCanvas._highlighterColor = color;
+    penCanvas._drawColor = color;
+    penCanvas._isEraser = false;
+    penCanvas._isHighlighter = true;
+    var toolbar = panel.querySelector('.draw-toolbar');
+    toolbar.querySelectorAll('.highlighter-colors .color-btn').forEach(function(b){b.classList.remove('active');});
+    var eraserBtn = toolbar.querySelector('.eraser');
+    if(eraserBtn) eraserBtn.classList.remove('active');
+    var hlColors = toolbar.querySelector('.highlighter-colors');
+    if(hlColors) hlColors.classList.remove('hidden');
+    var hlBtn = toolbar.querySelector('.highlighter');
+    if(hlBtn) hlBtn.classList.add('active');
+}
+
 // === AI 导入系统 ===
 if (typeof pdfjsLib !== 'undefined') {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -1920,6 +2147,7 @@ JSON格式：
   "impactFactor": "影响因子（如果不知道填\\"待查\\"）",
   "tier": "中科院分区（如果不知道填\\"待查\\"）",
   "description": "简短中文描述（50字以内，概述核心贡献）",
+  "keywords": ["关键词1", "关键词2", "关键词3", "关键词4", "关键词5"],
   "year": "发表年份"
 }`;
 }
@@ -2097,9 +2325,10 @@ async function showAnalysisResult(result, sourceUrl) {
     document.getElementById('analyzeBtn').style.display = 'none';
     document.getElementById('confirmAddBtn').style.display = '';
 
-    // AI 返回的所有分类
+    // AI 返回的所有分类和关键词
     const aiCats = result.categories || [];
     window._aiCategories = aiCats;
+    window._aiKeywords = result.keywords || [];
 
     // 自动注册 AI 返回的新分类（用户不知道的领域）
     const existingCats = getAllCategories();
@@ -2210,6 +2439,11 @@ function confirmAddPaper() {
     if (journal) tagsHtml += '<span class="tag tag-journal">' + journal + '</span>';
     if (ifVal) tagsHtml += '<span class="tag tag-if">IF = ' + ifVal + '</span>';
     if (allCats.includes('chinese')) tagsHtml += '<span class="tag tag-cn">中文</span>';
+    // AI 关键词
+    var aiKws = window._aiKeywords || [];
+    if (aiKws.length > 0) {
+        aiKws.forEach(function(kw) { tagsHtml += '<span class="tag tag-kw">' + kw + '</span>'; });
+    }
 
     const stored = JSON.parse(localStorage.getItem('importedPapers') || '[]');
     const allPapers = document.querySelectorAll('#paperList .paper');
@@ -2235,6 +2469,7 @@ function confirmAddPaper() {
     div.innerHTML = '<div class="paper-left"><div class="paper-num">' + num + '</div></div>'
         + '<div class="paper-right">'
         + '<button class="paper-delete" onclick="deletePaper(this)" title="删除此条目">&times;</button>'
+        + '<span class="fav-star" onclick="toggleFav(this,' + num + ')" title="收藏">★</span>'
         + '<div class="paper-title">' + title + '</div>'
         + '<div class="paper-tags">' + tagsHtml + '</div>'
         + '<div class="paper-desc">' + desc + '</div>'
@@ -2242,7 +2477,7 @@ function confirmAddPaper() {
 
     document.getElementById('paperList').appendChild(div);
 
-    stored.push({ num, title, categories: allCats, paperType, journal, impactFactor: ifVal, tier, url, description: desc, hasLocalPdf: !!_selectedPdfFile });
+    stored.push({ num, title, categories: allCats, paperType, journal, impactFactor: ifVal, tier, url, description: desc, keywords: window._aiKeywords || [], hasLocalPdf: !!_selectedPdfFile });
 
     // 保存到本地存储
     try {
@@ -2321,6 +2556,9 @@ async function loadImportedPapers() {
         if (p.journal) tagsHtml += '<span class="tag tag-journal">' + p.journal + '</span>';
         if (p.impactFactor) tagsHtml += '<span class="tag tag-if">IF = ' + p.impactFactor + '</span>';
         if ((p.categories || '').includes('chinese')) tagsHtml += '<span class="tag tag-cn">中文</span>';
+        if (p.keywords && p.keywords.length) {
+            p.keywords.forEach(function(kw) { tagsHtml += '<span class="tag tag-kw">' + kw + '</span>'; });
+        }
         let linksHtml = '';
 
         // 从 IndexedDB 恢复PDF阅读 链接
@@ -2335,6 +2573,7 @@ async function loadImportedPapers() {
         div.innerHTML = '<div class="paper-left"><div class="paper-num">' + p.num + '</div></div>'
             + '<div class="paper-right">'
             + '<button class="paper-delete" onclick="deletePaper(this)" title="删除此条目">&times;</button>'
+            + '<span class="fav-star' + (isFav(p.num)?' active':'') + '" onclick="toggleFav(this,' + p.num + ')" title="收藏">★</span>'
             + '<div class="paper-title">' + p.title + '</div>'
             + '<div class="paper-tags">' + tagsHtml + '</div>'
             + '<div class="paper-desc">' + (p.description || '') + '</div>'
@@ -2347,6 +2586,18 @@ async function loadImportedPapers() {
 function deletePaper(btn) {
     const paper = btn.closest('.paper');
     if (!paper) return;
+    // 收藏页面：只取消收藏
+    if (_showFavOnly) {
+        var numEl = paper.querySelector('.paper-num');
+        var num = numEl ? parseInt(numEl.textContent) : 0;
+        var favs = getFavorites();
+        var idx = favs.indexOf(num);
+        if (idx >= 0) { favs.splice(idx,1); localStorage.setItem('archipaper_favorites', JSON.stringify(favs)); }
+        showFavorites(); updateFavBadge();
+        var starEl = paper.querySelector('.fav-star');
+        if (starEl) starEl.classList.remove('active');
+        return;
+    }
     const title = paper.querySelector('.paper-title')?.textContent || '这篇论文';
 
     if (!confirm('确认删除「' + title.substring(0, 40) + '」？\n\n此操作不可恢复。')) return;
@@ -2382,11 +2633,19 @@ function injectDeleteButtons() {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
+    loadAvatar();
     renderSidebar();
     updateImportCategorySelect();
     await loadImportedPapers();
     updateSidebarCounts();
     injectDeleteButtons();
+    injectFavStars();
+    updateFavBadge();
+    restoreKeywords();
+    enrichKeywords();
+    // 更新头像用户名
+    var user = localStorage.getItem('archipaper_user') || '访客';
+    document.getElementById('userNameDisplay').textContent = user;
 });
 
 // === 搜索功能 ===
@@ -2561,6 +2820,8 @@ function showLogin() {
             if (_loginResolve) { _loginResolve(); _loginResolve = null; }
             document.getElementById('serverIndicator').classList.add('show');
             document.getElementById('serverUser').textContent = _username;
+            var ud = document.getElementById('userNameDisplay');
+            if (ud) ud.textContent = _username;
         } catch(e) { errEl.textContent = '网络错误，请检查服务器连接'; errEl.style.display = 'block'; }
     };
 }
@@ -2581,6 +2842,8 @@ if (IS_SERVER_MODE) {
         // 不强制登录，允许跳过使用本地模式
         if (_token) {
             document.getElementById('serverUser').textContent = _username;
+            var ud = document.getElementById('userNameDisplay');
+            if (ud) ud.textContent = _username;
         } else {
             document.getElementById('serverUser').textContent = '未登录（使用本地存储）';
         }
@@ -2595,6 +2858,199 @@ if (IS_SERVER_MODE) {
         }
     });
 }
+// === 头像系统 ===
+function openAvatarModal() {
+    document.getElementById('avatarModalOverlay').style.display = 'flex';
+}
+function closeAvatarModal(e) {
+    if (e && e.target !== document.getElementById('avatarModalOverlay')) return;
+    document.getElementById('avatarModalOverlay').style.display = 'none';
+}
+function handleAvatarUpload(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+        localStorage.setItem('archipaper_avatar', ev.target.result);
+        loadAvatar();
+        closeAvatarModal();
+    };
+    reader.readAsDataURL(file);
+}
+function removeAvatar() {
+    localStorage.removeItem('archipaper_avatar');
+    loadAvatar();
+    closeAvatarModal();
+}
+function loadAvatar() {
+    var data = localStorage.getItem('archipaper_avatar');
+    var placeholder = document.getElementById('avatarPlaceholder');
+    var avatar = document.getElementById('userAvatar');
+    var existingImg = avatar.querySelector('img');
+    if (existingImg) existingImg.remove();
+    // 大预览
+    var previewLarge = document.getElementById('avatarPreviewLarge');
+    var placeholderLg = document.getElementById('avatarPlaceholderLg');
+    if (previewLarge) {
+        var existingLg = previewLarge.querySelector('img');
+        if (existingLg) existingLg.remove();
+    }
+    if (data) {
+        var img = document.createElement('img');
+        img.src = data;
+        avatar.appendChild(img);
+        if (placeholder) placeholder.style.display = 'none';
+        if (previewLarge) {
+            var imgLg = document.createElement('img');
+            imgLg.src = data;
+            previewLarge.appendChild(imgLg);
+            if (placeholderLg) placeholderLg.style.display = 'none';
+        }
+    } else {
+        if (placeholder) placeholder.style.display = '';
+        if (placeholderLg) placeholderLg.style.display = '';
+    }
+}
+// === 关键词提取与显示 ===
+function enrichKeywords() {
+    var papers = document.querySelectorAll('#paperList .paper');
+    var cfg = { key: localStorage.getItem('aiPaperCollection_apiKey')||'', base: localStorage.getItem('aiPaperCollection_apiBase')||'https://api.deepseek.com' };
+    if (!cfg.key) return;
+    papers.forEach(function(p) {
+        if (p.querySelector('.tag-kw')) return;
+        var titleEl = p.querySelector('.paper-title');
+        var descEl = p.querySelector('.paper-desc');
+        if (!titleEl) return;
+        var linkEl = p.querySelector('.paper-links a');
+        var url = linkEl ? linkEl.href : '';
+        if (url && url.startsWith('javascript')) url = '';
+        if (!url) return;
+        // 异步抓取并提取
+        fetchKeywordsFromURL(p, titleEl.textContent, descEl?descEl.textContent:'', url, cfg);
+    });
+}
+async function fetchKeywordsFromURL(paper, title, desc, url, cfg) {
+    try {
+        var webText = '';
+        try { webText = await fetchWebContent(url); } catch(e) {}
+        var text = title + '\n' + desc + '\n' + webText.substring(0, 3000);
+        var apiUrl = cfg.base.replace(/\/$/,'') + '/v1/chat/completions';
+        var resp = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + cfg.key },
+            body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: '从以下论文提取5-8个核心关键词，只返回JSON数组：["k1","k2",...]\n\n' + text.substring(0,5000) }], temperature: 0.3, max_tokens: 200 })
+        });
+        var data = await resp.json();
+        var content = data.choices[0].message.content;
+        var m = content.match(/\[[\s\S]*\]/);
+        if (m) {
+            var kws = JSON.parse(m[0]);
+            var tagsDiv = paper.querySelector('.paper-tags');
+            if (tagsDiv && kws.length > 0) {
+                kws.forEach(function(kw) {
+                    var span = document.createElement('span');
+                    span.className = 'tag tag-kw';
+                    span.textContent = kw;
+                    tagsDiv.appendChild(span);
+                });
+            }
+            // 缓存
+            var numEl = paper.querySelector('.paper-num');
+            var num = numEl ? parseInt(numEl.textContent) : 0;
+            var cache = {}; try { cache = JSON.parse(localStorage.getItem('archipaper_keywords')||'{}'); } catch(e) {}
+            cache[num] = kws;
+            localStorage.setItem('archipaper_keywords', JSON.stringify(cache));
+        }
+    } catch(e) { console.log('关键词提取失败:', e.message); }
+}
+function restoreKeywords() {
+    var cache = {}; try { cache = JSON.parse(localStorage.getItem('archipaper_keywords')||'{}'); } catch(e) {}
+    var papers = document.querySelectorAll('#paperList .paper');
+    papers.forEach(function(p) {
+        if (p.querySelector('.tag-kw')) return;
+        var numEl = p.querySelector('.paper-num');
+        var num = numEl ? parseInt(numEl.textContent) : 0;
+        if (cache[num] && cache[num].length > 0) {
+            var tagsDiv = p.querySelector('.paper-tags');
+            if (!tagsDiv) return;
+            cache[num].forEach(function(kw) {
+                var span = document.createElement('span');
+                span.className = 'tag tag-kw';
+                span.textContent = kw;
+                tagsDiv.appendChild(span);
+            });
+        }
+    });
+}
+// === 收藏功能 ===
+function getFavorites() {
+    try { return JSON.parse(localStorage.getItem('archipaper_favorites')||'[]'); } catch(e) { return []; }
+}
+function isFav(num) { return getFavorites().indexOf(num) >= 0; }
+function toggleFav(starEl, num) {
+    var favs = getFavorites();
+    var idx = favs.indexOf(num);
+    if (idx >= 0) { favs.splice(idx,1); if(starEl) starEl.classList.remove('active'); }
+    else { favs.push(num); if(starEl) starEl.classList.add('active'); }
+    localStorage.setItem('archipaper_favorites', JSON.stringify(favs));
+    updateFavBadge();
+    if (_showFavOnly) showFavorites();
+}
+function updateFavBadge() {
+    var badge = document.getElementById('favBadge');
+    if (badge) badge.textContent = getFavorites().length;
+}
+function injectFavStars() {
+    document.querySelectorAll('#paperList .paper').forEach(function(p) {
+        if (p.querySelector('.fav-star')) return;
+        var numEl = p.querySelector('.paper-num');
+        if (!numEl) return;
+        var num = parseInt(numEl.textContent);
+        var right = p.querySelector('.paper-right');
+        if (!right) return;
+        var star = document.createElement('span');
+        star.className = 'fav-star' + (isFav(num)?' active':'');
+        star.textContent = '★';
+        star.title = '收藏';
+        star.onclick = function(e) { e.stopPropagation(); toggleFav(star, num); };
+        var delBtn = right.querySelector('.paper-delete');
+        if (delBtn) { delBtn.insertAdjacentElement('afterend', star); }
+        else { right.appendChild(star); }
+    });
+}
+var _showFavOnly = false;
+function showFavorites() {
+    _showFavOnly = true;
+    var favs = getFavorites();
+    document.querySelectorAll('#paperList .paper').forEach(function(p) {
+        var numEl = p.querySelector('.paper-num');
+        var num = numEl ? parseInt(numEl.textContent) : 0;
+        p.classList.toggle('hidden', favs.indexOf(num) < 0);
+        var delBtn = p.querySelector('.paper-delete');
+        if (delBtn) { delBtn.title = '取消收藏'; delBtn.style.color = ''; }
+    });
+    var fi = document.getElementById('filterInfo');
+    fi.style.display = 'flex';
+    fi.innerHTML = '<span style="color:#f5a623">★</span> 我的收藏 · <strong>' + favs.length + ' 篇</strong><span class="fav-back" onclick="showAllPapers()">← 返回全部</span>';
+}
+function showAllPapers() {
+    _showFavOnly = false;
+    document.querySelectorAll('#paperList .paper').forEach(function(p) {
+        p.classList.remove('hidden');
+        var delBtn = p.querySelector('.paper-delete');
+        if (delBtn) delBtn.title = '删除此条目';
+    });
+    document.getElementById('filterInfo').style.display = 'none';
+    if (_currentFilter !== 'all') filterPapers(_currentFilter);
+}
+// === 深夜模式 ===
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('archipaper_darkmode', document.body.classList.contains('dark-mode')?'1':'0');
+}
+(function() {
+    if (localStorage.getItem('archipaper_darkmode') === '1') document.body.classList.add('dark-mode');
+})();
 </script>
 <div class="server-indicator" id="serverIndicator">🟢 在线模式 · <span id="serverUser"></span></div>
 </body>
