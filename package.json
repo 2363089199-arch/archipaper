@@ -1,0 +1,20 @@
+{
+  "name": "archipaper",
+  "version": "1.0.0",
+  "description": "ArchiPaper - AI建筑论文管理系统",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.0",
+    "multer": "^2.2.0",
+    "better-sqlite3": "^12.11.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["paper", "management", "AI", "architecture"],
+  "author": "",
+  "license": "ISC"
+}

@@ -10,6 +10,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
             background: #fff; color: #1a1a1a; line-height: 1.6;
+            overscroll-behavior-x: none;
         }
         .layout { display: flex; min-height: 100vh; }
         /* 左侧导航 */
@@ -50,7 +51,7 @@
         .nav-item:hover .nav-item-edit { display: inline-block; }
         .nav-item-edit:hover { color: #e74c3c; background: #fef2f2; }
         /* 主内容 */
-        .main { margin-left: 220px; flex: 1; padding: 24px 36px; }
+        .main { margin-left: 220px; flex: 1; padding: 24px 36px; max-width: calc(100vw - 220px - 30px); }
         .page-header { margin-bottom: 28px; padding: 20px 36px 12px; border-bottom: 1px solid #e5e5e5; }
         .page-header-top { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
         .page-header-left { min-width: 0; }
@@ -80,24 +81,66 @@
         .search-clear { display: none; font-size: 16px; }
         .search-clear.visible { display: flex; }
         .search-match-count { font-size: 11px; color: #999; margin-left: 8px; white-space: nowrap; }
-        /* 头像 */
-        .user-widget {
-            position: fixed; top: 20px; right: 28px; z-index: 20;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            opacity: 0.4; transition: opacity 0.3s;
+        /* 右侧用户面板 */
+        .user-panel {
+            position: fixed; top: 0; right: 0; z-index: 25;
+            width: 180px; height: 100vh;
+            background: linear-gradient(165deg, rgba(255,255,255,0.18) 0%, rgba(200,210,240,0.08) 50%, rgba(255,255,255,0.22) 100%);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            border-left: 1px solid rgba(255,255,255,0.18);
+            box-shadow: -8px 0 40px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column;
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
         }
-        .user-widget:hover { opacity: 1; }
-        .user-avatar {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: #1a1a1a; cursor: pointer;
+        .user-panel.collapsed { transform: translateX(180px); background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-left: none; }
+        .user-panel-inner {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 50px 14px 20px; flex: 1;
+        }
+        .user-panel-toggle {
+            position: absolute; top: 50%; left: -16px; transform: translateY(-50%);
+            width: 32px; height: 32px; border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9);
+            cursor: pointer; font-size: 12px; color: #999;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
+            transition: all 0.2s; z-index: 2;
         }
-        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-placeholder { width: 20px; height: 20px; }
-        .user-name { font-size: 11px; color: #888; }
-        .user-logout { font-size: 10px; color: #bbb; cursor: pointer; text-decoration: none; }
-        .user-logout:hover { color: #888; }
+        .user-panel-toggle:hover { background: #fff; color: #333; }
+        .user-panel.collapsed .user-panel-toggle {
+            left: -32px;
+            background: linear-gradient(165deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
+            backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: -4px 2px 16px rgba(0,0,0,0.04);
+        }
+        .user-panel-avatar {
+            width: 54px; height: 54px; border-radius: 50%;
+            background: #1a1a1a; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .user-panel-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-placeholder { width: 26px; height: 26px; }
+        .user-panel-name { font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
+        .user-panel-stats {
+            display: flex; gap: 14px; margin-bottom: 14px;
+        }
+        .panel-stat { font-size: 10px; color: #888; }
+        .panel-stat span { font-weight: 600; color: #555; }
+        .panel-divider { width: 100%; height: 1px; background: rgba(0,0,0,0.06); margin: 8px 0; }
+        .user-panel-actions { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+        .panel-action {
+            padding: 6px 8px; font-size: 11px; color: #555;
+            cursor: pointer; border-radius: 6px; transition: all 0.15s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .panel-action:hover { background: rgba(0,0,0,0.04); color: #1a1a1a; }
+        .panel-action.logout { color: #bbb; margin-top: 4px; }
+        .panel-action.logout:hover { color: #e74c3c; }
+        .panel-action.login { color: #4caf50; font-weight: 600; }
+        .panel-action.login:hover { background: rgba(76,175,80,0.06); color: #388e3c; }
+        .fav-badge { background: #f5a623; color: #fff; font-size: 10px; border-radius: 10px; padding: 1px 6px; margin-left: 4px; }
         /* 收藏 */
         .fav-star {
             position: absolute; top: 24px; right: 0;
@@ -109,26 +152,6 @@
         .paper:hover .fav-star { opacity: 1; }
         .fav-star:hover { opacity: 1; color: #f5a623; background: #fff8e8; }
         .fav-star.active { opacity: 1; color: #f5a623; }
-        .fav-dropdown {
-            position: absolute; top: 100%; right: -8px;
-            margin-top: 8px; background: #fff;
-            border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-            padding: 6px 0; z-index: 30;
-            min-width: 120px; border: 1px solid #eee;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.15s, visibility 0.15s;
-        }
-        .user-widget:hover .fav-dropdown { opacity: 1; visibility: visible; }
-        .fav-dropdown-item {
-            display: block; padding: 8px 16px; font-size: 12px;
-            color: #333; text-decoration: none; cursor: pointer;
-            transition: background 0.15s; white-space: nowrap;
-        }
-        .fav-dropdown-item:hover { background: #f5f5f5; }
-        .fav-badge {
-            background: #f5a623; color: #fff; font-size: 10px;
-            border-radius: 10px; padding: 1px 6px; margin-left: 6px;
-        }
         .fav-back { margin-left: 10px; cursor: pointer; color: #f5a623; font-size: 11px; font-weight: 600; }
         /* 关键词标签 */
         .tag-kw {
@@ -178,6 +201,7 @@
         .pdf-panel {
             display: none; margin: 8px -36px 8px -36px; border: 1px solid #e0e0e0; border-radius: 8px;
             overflow: hidden; background: #f8f8f8;
+            touch-action: pan-y; overscroll-behavior-x: contain;
         }        .filter-info {
             font-size: 12px; color: #999; margin-bottom: 20px; padding: 8px 14px;
             background: #f8f8f8; border-left: 3px solid #ddd; display: none;
@@ -299,6 +323,7 @@
         /* PDF 叠加画布 */
         .pdf-viewer-wrap {
             flex: 1; position: relative; overflow: hidden;
+            touch-action: pan-y pinch-zoom; overscroll-behavior-x: contain;
         }
         .pdf-viewer-wrap canvas {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -476,6 +501,20 @@
         body.dark-mode .fav-dropdown-item { color: #c5c8d0; }
         body.dark-mode .fav-dropdown-item:hover { background: #282c35; }
         body.dark-mode .avatar-modal { background: #1f2330; }
+        body.dark-mode .user-drawer-tab { background: #2a2f3a; }
+        body.dark-mode .user-drawer-panel { background: rgba(22,22,40,0.95); }
+        body.dark-mode .user-panel {
+            background: rgba(22,25,35,0.55);
+            border-color: rgba(255,255,255,0.06);
+        }
+        body.dark-mode .user-panel-name { color: #d8dce3; }
+        body.dark-mode .panel-action { color: #8a8f9a; }
+        body.dark-mode .panel-action:hover { background: rgba(255,255,255,0.04); color: #c5c8d0; }
+        body.dark-mode .panel-stat { color: #6a6f7a; }
+        body.dark-mode .panel-stat span { color: #8a8f9a; }
+        body.dark-mode .panel-divider { background: rgba(255,255,255,0.06); }
+        body.dark-mode .user-panel-toggle { background: rgba(30,34,44,0.9); border-color: rgba(255,255,255,0.08); color: #6a6f7a; }
+        body.dark-mode .user-panel-toggle:hover { background: rgba(40,44,54,0.9); color: #c5c8d0; }
         /* 荧光笔 */
         .draw-toolbar .action-btn.highlighter.active { background: #fde047; color: #1a1a1a; border-color: #fde047; }
         .highlighter-colors { display: inline-flex; gap: 4px; align-items: center; margin-left: 2px; }
@@ -507,7 +546,15 @@
         .login-card {
             background: #fff; border-radius: 12px; padding: 32px 36px;
             width: 360px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
         }
+        .login-close {
+            position: absolute; top: 12px; right: 14px;
+            width: 28px; height: 28px; border-radius: 50%;
+            border: none; background: none; font-size: 20px; color: #bbb;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .login-close:hover { color: #333; background: #f0f0f0; }
         .login-card h2 { font-size: 20px; margin-bottom: 4px; }
         .login-card .sub { font-size: 12px; color: #888; margin-bottom: 20px; }
         .login-card .form-group { margin-bottom: 14px; }
@@ -574,16 +621,30 @@
     </a>
 </nav>
 
-<!-- 右上角头像 -->
-<div class="user-widget" id="userWidget">
-    <div class="user-avatar" id="userAvatar" onclick="openAvatarModal()" title="设置头像">
-        <svg class="avatar-placeholder" id="avatarPlaceholder" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" fill="#fff"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="2" fill="none"/></svg>
-    </div>
-    <div class="user-name" id="userNameDisplay">访客</div>
-    <a class="user-logout" onclick="logout()">Sign out</a>
-    <div class="fav-dropdown">
-        <div class="fav-dropdown-item" onclick="showFavorites()">
-            <span style="color:#f5a623;margin-right:6px">★</span>我的收藏<span class="fav-badge" id="favBadge">0</span>
+<!-- 右侧用户面板 -->
+<div class="user-panel" id="userPanel">
+    <div class="user-panel-inner">
+        <button class="user-panel-toggle" id="userPanelToggle" onclick="toggleUserPanel()" title="收起">▶</button>
+        <div class="user-panel-avatar" id="userPanelAvatar">
+            <svg class="avatar-placeholder" id="avatarPlaceholder" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" fill="#fff"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#fff" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div class="user-panel-name" id="userDrawerName">访客</div>
+        <div class="user-panel-stats">
+            <span class="panel-stat"><span id="panelFavCount">0</span> 收藏</span>
+            <span class="panel-stat"><span id="panelPaperCount">0</span> 论文</span>
+        </div>
+        <div class="user-panel-actions">
+            <div class="panel-action" onclick="openAvatarModal()">设置头像</div>
+            <div class="panel-action" onclick="showFavorites()">
+                <span style="color:#f5a623">★</span> 我的收藏<span class="fav-badge" id="favBadge">0</span>
+            </div>
+            <div class="panel-action" onclick="openSettingsModal()">AI 设置</div>
+            <div class="panel-action" onclick="openImportModal()">导入论文</div>
+        </div>
+        <div class="panel-divider"></div>
+        <div class="user-panel-actions">
+            <div class="panel-action logout" id="panelLogout" onclick="logout()" style="display:none">退出登录</div>
+            <div class="panel-action login" id="panelLogin" onclick="showLogin()">登录 / 注册</div>
         </div>
     </div>
 </div>
@@ -1248,12 +1309,17 @@
     var user = localStorage.getItem('archipaper_current_user') || '访客';
     var userEl = document.getElementById('headerUser');
     if (userEl) userEl.textContent = user;
+    // 同步用户名到 userDrawerName
+    var ud = document.getElementById('userDrawerName');
+    if (ud) ud.textContent = user;
 })();
 
 function logout() {
     if (confirm('确认退出登录？')) {
         localStorage.removeItem('archipaper_logged_in');
         localStorage.removeItem('archipaper_current_user');
+        localStorage.removeItem('archipaper_token');
+        localStorage.removeItem('archipaper_user');
         window.location.href = 'login.html';
     }
 }
@@ -1473,12 +1539,17 @@ function removeCategory(key) {
 
 
 function closePdfPanel() {
-    document.querySelectorAll('.paper.pdf-open').forEach(p => p.classList.remove('pdf-open'));
+    var openPapers = document.querySelectorAll('.paper.pdf-open');
+    openPapers.forEach(p => p.classList.remove('pdf-open'));
     document.querySelectorAll('.pdf-panel').forEach(p => {
         const iframe = p.querySelector('iframe');
         if (iframe) iframe.src = '';
         p.classList.remove('show');
     });
+    // 将关闭的论文条目滚动到屏幕最上方
+    if (openPapers.length > 0) {
+        openPapers[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 // === DeepSeek AI 问答 ===
 function appendChatMsg(messagesEl, role, text) {
@@ -1536,6 +1607,9 @@ async function sendAiQuery(btn) {
 function openPdfInline(link, num) {
     event.preventDefault();
     closePdfPanel();
+    // 打开 PDF 时自动收起右侧用户面板
+    document.getElementById('userPanel').classList.add('collapsed');
+    document.getElementById('userPanelToggle').innerHTML = '◀';
     const papers = document.querySelectorAll('.paper');
     let targetPaper = null;
     papers.forEach(p => {
@@ -1557,6 +1631,8 @@ function openPdfInline(link, num) {
     }
     panel.querySelector('.pdf-panel-title').textContent = '论文 #' + num;
     panel.querySelector('iframe').src = link;
+    // 每次打开 PDF 默认非涂画模式
+    resetAnnotateMode(panel);
     panel.classList.add('show');
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -1564,6 +1640,9 @@ function openPdfInline(link, num) {
 // 用于导入的 PDF（Blob URL）
 function openPdfBlob(blobUrl, num) {
     closePdfPanel();
+    // 打开 PDF 时自动收起右侧用户面板
+    document.getElementById('userPanel').classList.add('collapsed');
+    document.getElementById('userPanelToggle').innerHTML = '◀';
     const papers = document.querySelectorAll('#paperList .paper');
     let targetPaper = null;
     papers.forEach(p => {
@@ -1585,6 +1664,8 @@ function openPdfBlob(blobUrl, num) {
     }
     panel.querySelector('.pdf-panel-title').textContent = '论文 #' + num + ' · 已导入';
     panel.querySelector('iframe').src = blobUrl;
+    // 每次打开 PDF 默认非涂画模式
+    resetAnnotateMode(panel);
     panel.classList.add('show');
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -1603,6 +1684,40 @@ function toggleAnnotateMode(btn) {
         btn.innerHTML = PENCIL_SVG + '涂画模式';
         penCanvas.classList.remove('drawing-active');
     }
+}
+
+function resetAnnotateMode(panel) {
+    // 每次打开 PDF 时重置为非涂画模式
+    var toggle = panel.querySelector('.annotate-toggle');
+    var penCanvas = panel.querySelector('.pen-canvas');
+    if (toggle) {
+        toggle.classList.remove('active');
+        toggle.innerHTML = PENCIL_SVG + '涂画模式';
+    }
+    if (penCanvas) {
+        penCanvas.classList.remove('drawing-active');
+        penCanvas._isHighlighter = false;
+        penCanvas._isEraser = false;
+        penCanvas._drawColor = '#ef4444';
+        penCanvas._drawSize = 4;
+    }
+    // 重置荧光笔和橡皮状态
+    var hlBtn = panel.querySelector('.highlighter');
+    var eraserBtn = panel.querySelector('.eraser');
+    var hlColors = panel.querySelector('.highlighter-colors');
+    if (hlBtn) hlBtn.classList.remove('active');
+    if (eraserBtn) eraserBtn.classList.remove('active');
+    if (hlColors) hlColors.classList.add('hidden');
+    // 重置画笔颜色为红色
+    panel.querySelectorAll('.color-btn[data-color]').forEach(function(b) {
+        b.classList.remove('active');
+        if (b.dataset.color === '#ef4444') b.classList.add('active');
+    });
+    // 重置粗细为中
+    panel.querySelectorAll('.size-btn').forEach(function(b) {
+        b.classList.remove('active');
+        if (b.dataset.size === '4') b.classList.add('active');
+    });
 }
 
 function initCanvasDrawing(panel, paperNum) {
@@ -1744,7 +1859,7 @@ function initCanvasDrawing(panel, paperNum) {
             ctx.globalAlpha = 1.0;
             ctx.lineWidth = (penCanvas._drawSize || drawSize) * 5;
         } else if (penCanvas._isHighlighter) {
-            hlCtx.lineWidth = penCanvas._drawSize ? Math.max(penCanvas._drawSize * 3, 20) : 20;
+            hlCtx.lineWidth = penCanvas._drawSize ? Math.max(penCanvas._drawSize * 4, 24) : 24;
             hlCtx.strokeStyle = penCanvas._drawColor;
         } else {
             ctx.globalCompositeOperation = 'source-over';
@@ -1763,9 +1878,14 @@ function initCanvasDrawing(panel, paperNum) {
         var activeCtx = penCanvas._isHighlighter ? hlCtx : penCtx;
         updateActiveBrush();
         const pos = getPos(e);
+        _lastMidPoint = null;
+        _lastPos = { x: pos.x, y: pos.y };
         activeCtx.beginPath();
         activeCtx.moveTo(pos.x, pos.y);
     }
+
+    let _lastMidPoint = null;
+    let _lastPos = null;
 
     function draw(e) {
         if (!isDrawing || !penCanvas.classList.contains('drawing-active')) return;
@@ -1773,7 +1893,20 @@ function initCanvasDrawing(panel, paperNum) {
         e.stopPropagation();
         var pos = getPos(e);
         var activeCtx = penCanvas._isHighlighter ? hlCtx : penCtx;
-        activeCtx.lineTo(pos.x, pos.y);
+        if (penCanvas._isHighlighter) {
+            // 荧光笔：使用二次贝塞尔曲线平滑笔迹，让字迹更圆润
+            var midX = (_lastPos ? _lastPos.x : pos.x) + (pos.x - (_lastPos ? _lastPos.x : pos.x)) / 2;
+            var midY = (_lastPos ? _lastPos.y : pos.y) + (pos.y - (_lastPos ? _lastPos.y : pos.y)) / 2;
+            if (_lastMidPoint) {
+                activeCtx.quadraticCurveTo(_lastPos.x, _lastPos.y, midX, midY);
+            } else {
+                activeCtx.lineTo(pos.x, pos.y);
+            }
+            _lastMidPoint = { x: midX, y: midY };
+            _lastPos = { x: pos.x, y: pos.y };
+        } else {
+            activeCtx.lineTo(pos.x, pos.y);
+        }
         activeCtx.stroke();
     }
 
@@ -1808,6 +1941,16 @@ function initCanvasDrawing(panel, paperNum) {
     penCanvas.addEventListener('touchstart', startDraw, { passive: false });
     penCanvas.addEventListener('touchmove', draw, { passive: false });
     penCanvas.addEventListener('touchend', stopDraw);
+
+    // 阻止双指滑动触发浏览器前进/后退
+    var viewerWrap = panel.querySelector('.pdf-viewer-wrap');
+    if (viewerWrap) {
+        viewerWrap.addEventListener('wheel', function(e) {
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
 }
 
 function setDrawColor(btn, color) {
@@ -2482,6 +2625,12 @@ function confirmAddPaper() {
     // 保存到本地存储
     try {
         localStorage.setItem('importedPapers', JSON.stringify(stored));
+        // 同时保存关键词到独立缓存（冗余备份）
+        if (window._aiKeywords && window._aiKeywords.length > 0) {
+            var kwCache = {}; try { kwCache = JSON.parse(localStorage.getItem('archipaper_keywords')||'{}'); } catch(e) {}
+            kwCache[num] = window._aiKeywords;
+            localStorage.setItem('archipaper_keywords', JSON.stringify(kwCache));
+        }
     } catch(e) {
         console.error('保存论文失败:', e);
     }
@@ -2641,11 +2790,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     injectDeleteButtons();
     injectFavStars();
     updateFavBadge();
+    updateAuthUI();
     restoreKeywords();
     enrichKeywords();
     // 更新头像用户名
     var user = localStorage.getItem('archipaper_user') || '访客';
-    document.getElementById('userNameDisplay').textContent = user;
+    document.getElementById('userDrawerName').textContent = user;
 });
 
 // === 搜索功能 ===
@@ -2763,7 +2913,7 @@ function filterPapers(cat) {
 // ========== 服务器模式 — API 适配层 ==========
 const IS_SERVER_MODE = window.location.protocol === 'http:' || window.location.protocol === 'https:';
 let _token = localStorage.getItem('archipaper_token') || '';
-let _username = localStorage.getItem('archipaper_user') || '';
+let _username = localStorage.getItem('archipaper_user') || localStorage.getItem('archipaper_current_user') || '';
 
 function apiHeaders() {
     return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _token };
@@ -2782,11 +2932,17 @@ async function apiCall(method, path, body) {
 // 登录/注册 UI
 let _loginResolve = null;
 function showLogin() {
+    // 本地模式：跳转到 login.html
+    if (!IS_SERVER_MODE) {
+        window.location.href = 'login.html';
+        return;
+    }
     if (document.getElementById('loginOverlay')) return;
     const overlay = document.createElement('div');
     overlay.id = 'loginOverlay';
     overlay.className = 'login-overlay';
     overlay.innerHTML = `<div class="login-card">
+        <button class="login-close" id="loginClose">&times;</button>
         <h2>ArchiPaper</h2>
         <p class="sub" id="loginSub">登录后同步你的论文数据</p>
         <div class="login-error" id="loginError"></div>
@@ -2796,6 +2952,8 @@ function showLogin() {
         <div class="login-switch">没有账号？<a id="loginSwitch">立即注册</a></div>
     </div>`;
     document.body.appendChild(overlay);
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+    document.getElementById('loginClose').onclick = function() { overlay.remove(); };
     let mode = 'login';
     document.getElementById('loginSwitch').onclick = function() {
         mode = mode === 'login' ? 'register' : 'login';
@@ -2816,12 +2974,18 @@ function showLogin() {
             _token = data.token; _username = data.username;
             localStorage.setItem('archipaper_token', _token);
             localStorage.setItem('archipaper_user', _username);
+            localStorage.setItem('archipaper_current_user', _username);
+            localStorage.setItem('archipaper_logged_in', 'true');
             document.getElementById('loginOverlay').remove();
             if (_loginResolve) { _loginResolve(); _loginResolve = null; }
             document.getElementById('serverIndicator').classList.add('show');
             document.getElementById('serverUser').textContent = _username;
-            var ud = document.getElementById('userNameDisplay');
+            var ud = document.getElementById('userDrawerName');
             if (ud) ud.textContent = _username;
+            updateAuthUI();
+            if (IS_SERVER_MODE) {
+                loadImportedPapers().then(function() { updateSidebarCounts(); injectFavStars(); updateFavBadge(); });
+            }
         } catch(e) { errEl.textContent = '网络错误，请检查服务器连接'; errEl.style.display = 'block'; }
     };
 }
@@ -2839,13 +3003,29 @@ async function uploadPdfToServer(num) {
 if (IS_SERVER_MODE) {
     window.addEventListener('DOMContentLoaded', function() {
         document.getElementById('serverIndicator').classList.add('show');
-        // 不强制登录，允许跳过使用本地模式
         if (_token) {
+            // 已有 token，显示已登录状态
             document.getElementById('serverUser').textContent = _username;
-            var ud = document.getElementById('userNameDisplay');
+            var ud = document.getElementById('userDrawerName');
             if (ud) ud.textContent = _username;
+            updateAuthUI();
         } else {
-            document.getElementById('serverUser').textContent = '未登录（使用本地存储）';
+            // 没有 token：可能是访客或从 login.html 跳过来但 token 丢失
+            var currentUser = localStorage.getItem('archipaper_current_user') || '';
+            if (currentUser && currentUser !== '访客') {
+                // 有本地用户名但没有 token，需要重新登录以同步
+                document.getElementById('serverUser').textContent = currentUser + '（未同步服务器）';
+                var ud = document.getElementById('userDrawerName');
+                if (ud) ud.textContent = currentUser;
+                var ind = document.getElementById('serverIndicator');
+                if (ind) {
+                    ind.style.cursor = 'pointer';
+                    ind.title = '点击登录同步数据到服务器';
+                    ind.onclick = function() { showLogin(); };
+                }
+            } else {
+                document.getElementById('serverUser').textContent = '未登录（使用本地存储）';
+            }
         }
     });
     // 暴露登录入口：点击左下角指示器可登录
@@ -2884,28 +3064,20 @@ function removeAvatar() {
 }
 function loadAvatar() {
     var data = localStorage.getItem('archipaper_avatar');
+    // 面板头像
+    var panelAvatar = document.getElementById('userPanelAvatar');
     var placeholder = document.getElementById('avatarPlaceholder');
-    var avatar = document.getElementById('userAvatar');
-    var existingImg = avatar.querySelector('img');
-    if (existingImg) existingImg.remove();
-    // 大预览
+    if (panelAvatar) { var e = panelAvatar.querySelector('img'); if(e) e.remove(); }
+    // 弹窗预览
     var previewLarge = document.getElementById('avatarPreviewLarge');
     var placeholderLg = document.getElementById('avatarPlaceholderLg');
-    if (previewLarge) {
-        var existingLg = previewLarge.querySelector('img');
-        if (existingLg) existingLg.remove();
-    }
+    if (previewLarge) { var e2 = previewLarge.querySelector('img'); if(e2) e2.remove(); }
     if (data) {
-        var img = document.createElement('img');
-        img.src = data;
-        avatar.appendChild(img);
+        var img = document.createElement('img'); img.src = data;
+        if (panelAvatar) panelAvatar.appendChild(img);
         if (placeholder) placeholder.style.display = 'none';
-        if (previewLarge) {
-            var imgLg = document.createElement('img');
-            imgLg.src = data;
-            previewLarge.appendChild(imgLg);
-            if (placeholderLg) placeholderLg.style.display = 'none';
-        }
+        if (previewLarge) { var i2 = document.createElement('img'); i2.src = data; previewLarge.appendChild(i2); }
+        if (placeholderLg) placeholderLg.style.display = 'none';
     } else {
         if (placeholder) placeholder.style.display = '';
         if (placeholderLg) placeholderLg.style.display = '';
@@ -2964,16 +3136,33 @@ async function fetchKeywordsFromURL(paper, title, desc, url, cfg) {
     } catch(e) { console.log('关键词提取失败:', e.message); }
 }
 function restoreKeywords() {
+    // 优先从独立缓存恢复
     var cache = {}; try { cache = JSON.parse(localStorage.getItem('archipaper_keywords')||'{}'); } catch(e) {}
+    // 同时读取论文存储数据作为备选
+    var imported = []; try { imported = JSON.parse(localStorage.getItem('importedPapers')||'[]'); } catch(e) {}
     var papers = document.querySelectorAll('#paperList .paper');
     papers.forEach(function(p) {
         if (p.querySelector('.tag-kw')) return;
         var numEl = p.querySelector('.paper-num');
         var num = numEl ? parseInt(numEl.textContent) : 0;
+        var kws = [];
+        // 先尝试缓存
         if (cache[num] && cache[num].length > 0) {
+            kws = cache[num];
+        } else {
+            // 回退：从 importedPapers 中查找
+            var found = imported.find(function(ip) { return ip.num === num; });
+            if (found && found.keywords && found.keywords.length > 0) {
+                kws = found.keywords;
+                // 回填缓存
+                cache[num] = kws;
+                localStorage.setItem('archipaper_keywords', JSON.stringify(cache));
+            }
+        }
+        if (kws.length > 0) {
             var tagsDiv = p.querySelector('.paper-tags');
             if (!tagsDiv) return;
-            cache[num].forEach(function(kw) {
+            kws.forEach(function(kw) {
                 var span = document.createElement('span');
                 span.className = 'tag tag-kw';
                 span.textContent = kw;
@@ -2998,7 +3187,12 @@ function toggleFav(starEl, num) {
 }
 function updateFavBadge() {
     var badge = document.getElementById('favBadge');
-    if (badge) badge.textContent = getFavorites().length;
+    var cnt = getFavorites().length;
+    if (badge) badge.textContent = cnt;
+    var fc = document.getElementById('panelFavCount');
+    if (fc) fc.textContent = cnt;
+    var pc = document.getElementById('panelPaperCount');
+    if (pc) pc.textContent = document.querySelectorAll('#paperList .paper').length;
 }
 function injectFavStars() {
     document.querySelectorAll('#paperList .paper').forEach(function(p) {
@@ -3051,6 +3245,22 @@ function toggleDarkMode() {
 (function() {
     if (localStorage.getItem('archipaper_darkmode') === '1') document.body.classList.add('dark-mode');
 })();
+// === 用户面板授权UI ===
+function updateAuthUI() {
+    var hasToken = !!localStorage.getItem('archipaper_token');
+    var logoutEl = document.getElementById('panelLogout');
+    var loginEl = document.getElementById('panelLogin');
+    if (logoutEl) logoutEl.style.display = hasToken ? '' : 'none';
+    if (loginEl) loginEl.style.display = hasToken ? 'none' : '';
+}
+// === 用户面板折叠 ===
+function toggleUserPanel() {
+    var panel = document.getElementById('userPanel');
+    var btn = document.getElementById('userPanelToggle');
+    panel.classList.toggle('collapsed');
+    btn.innerHTML = panel.classList.contains('collapsed') ? '◀' : '▶';
+    btn.title = panel.classList.contains('collapsed') ? '展开' : '收起';
+}
 </script>
 <div class="server-indicator" id="serverIndicator">🟢 在线模式 · <span id="serverUser"></span></div>
 </body>

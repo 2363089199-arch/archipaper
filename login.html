@@ -11,6 +11,7 @@
             background: #fff; color: #1a1a1a; line-height: 1.6;
             display: flex; align-items: center; justify-content: center;
             min-height: 100vh; padding: 24px;
+            overscroll-behavior-x: none;
         }
 
         /* 主卡片 */
@@ -19,7 +20,7 @@
             background: #fff; border-radius: 20px;
             box-shadow: 0 8px 48px rgba(0,0,0,0.08);
             display: flex; overflow: hidden;
-            animation: cardIn 0.5s ease-out;
+            opacity: 0; animation: cardIn 0.5s ease-out 0.05s forwards;
         }
         @keyframes cardIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -568,30 +569,62 @@ function handleSubmit() {
     if (username.length < 2) { showError('用户名至少 2 个字符'); return; }
     if (password.length < 3) { showError('密码至少 3 位'); return; }
 
-    var users = getUsers();
-    if (mode === 'register') {
-        var confirm = document.getElementById('confirmPass').value.trim();
-        if (!confirm) { showError('请输入确认密码'); return; }
-        if (password !== confirm) { showError('两次密码不一致'); return; }
-        if (users[username]) { showError('用户名已存在'); return; }
-        users[username] = btoa(password); saveUsers(users);
-        playTransition(username);
+    // 判断是否在服务器模式（通过 http:// 访问）
+    var isServer = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+
+    if (isServer) {
+        // 服务器模式：调用后端 API
+        var btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.textContent = '连接中…';
+        var apiPath = '/api/' + mode;
+        fetch(apiPath, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password })
+        }).then(function(resp) {
+            return resp.json().then(function(data) {
+                if (!resp.ok) { showError(data.error || '登录失败'); btn.disabled = false; btn.textContent = mode === 'login' ? 'Login' : 'Register'; return; }
+                // 存储 token 和用户名
+                localStorage.setItem('archipaper_token', data.token);
+                localStorage.setItem('archipaper_user', data.username);
+                playTransition(username);
+            });
+        }).catch(function() {
+            showError('网络错误，请检查服务器连接');
+            btn.disabled = false; btn.textContent = mode === 'login' ? 'Login' : 'Register';
+        });
     } else {
-        if (!users[username]) { showError('用户名不存在'); return; }
-        if (users[username] !== btoa(password)) { showError('密码错误'); return; }
-        playTransition(username);
+        // 本地模式：使用 localStorage
+        var users = getUsers();
+        if (mode === 'register') {
+            var confirm = document.getElementById('confirmPass').value.trim();
+            if (!confirm) { showError('请输入确认密码'); return; }
+            if (password !== confirm) { showError('两次密码不一致'); return; }
+            if (users[username]) { showError('用户名已存在'); return; }
+            users[username] = btoa(password); saveUsers(users);
+            playTransition(username);
+        } else {
+            if (!users[username]) { showError('用户名不存在'); return; }
+            if (users[username] !== btoa(password)) { showError('密码错误'); return; }
+            playTransition(username);
+        }
     }
 }
 
 function skipLogin() {
     localStorage.setItem('archipaper_logged_in', 'true');
     localStorage.setItem('archipaper_current_user', '访客');
-    playTransition('访客');
+    // 跳过登录不设置 token，服务器模式下以本地模式运行
+    window.location.href = 'index.html';
 }
 
 function playTransition(username) {
     localStorage.setItem('archipaper_logged_in', 'true');
     localStorage.setItem('archipaper_current_user', username);
+    // 同步设置 archipaper_user（index.html 服务器模式使用）
+    if (!localStorage.getItem('archipaper_user')) {
+        localStorage.setItem('archipaper_user', username);
+    }
     window.location.href = 'index.html';
 }
 
